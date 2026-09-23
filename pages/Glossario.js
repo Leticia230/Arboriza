@@ -29,6 +29,81 @@ const GLOSSARY_TERMS = [
     letter: "A",
     term: "Aquecimento global",
     definition: "Aumento da temperatura média do planeta associado principalmente à intensificação do efeito estufa causada pelas atividades humanas."
+  },
+  {
+    letter: "A",
+    term: "Albedo urbano",
+    definition: "Capacidade das superfícies de refletirem ou absorverem radiação solar, influenciando a temperatura urbana."
+  },
+  {
+    letter: "C",
+    term: "Cobertura do solo",
+    definition: "Tipo de superfície predominante em uma área, como vegetação, concreto ou asfalto."
+  },
+  {
+    letter: "C",
+    term: "Corredores verdes",
+    definition: "Faixas contínuas de vegetação que conectam parques e áreas naturais, favorecendo a circulação de ar fresco e a biodiversidade."
+  },
+  {
+    letter: "E",
+    term: "Efeito Canyon urbano",
+    definition: "Acúmulo de calor em ruas estreitas cercadas por prédios altos. Consequência: redução da ventilação natural e intensificação do calor local."
+  },
+  {
+    letter: "E",
+    term: "Efeito de ilha de frescor",
+    definition: "Áreas verdes que criam bolsões de temperaturas mais baixas em meio ao calor urbano. Consequência: melhora da qualidade de vida e redução da demanda por ar-condicionado."
+  },
+  {
+    letter: "F",
+    term: "Fragmentação verde",
+    definition: "Quebra de áreas contínuas de vegetação em pequenos espaços isolados. Consequência: perda de eficiência no resfriamento e redução da biodiversidade."
+  },
+  {
+    letter: "I",
+    term: "Ilha de calor superficial",
+    definition: "Fenômeno medido pela temperatura da superfície (solo, telhados, pavimentos), geralmente mais elevada em áreas urbanas."
+  },
+  {
+    letter: "I",
+    term: "Ilha de calor urbana",
+    definition: "Fenômeno em que áreas urbanas ficam mais quentes que áreas rurais."
+  },
+  {
+    letter: "I",
+    term: "Impermeabilização do solo",
+    definition: "Cobertura do solo por concreto e asfalto, impedindo a infiltração de água. Consequência: aumento da temperatura e maior risco de enchentes."
+  },
+  {
+    letter: "I",
+    term: "Infraestrutura verde",
+    definition: "Parques, telhados verdes e corredores ecológicos que ajudam a reduzir o calor urbano."
+  },
+  {
+    letter: "M",
+    term: "Microclima urbano",
+    definition: "Condições climáticas específicas de uma área urbana, influenciadas pela vegetação."
+  },
+  {
+    letter: "M",
+    term: "Mitigação climática",
+    definition: "Estratégias que utilizam vegetação para reduzir os impactos do aquecimento urbano e das mudanças climáticas."
+  },
+  {
+    letter: "P",
+    term: "Poluição térmica",
+    definition: "Alteração do equilíbrio térmico natural devido ao excesso de calor gerado por atividades humanas. Consequência: impacto negativo na fauna, flora e no bem-estar humano."
+  },
+  {
+    letter: "S",
+    term: "Stress térmico",
+    definition: "Condição em que o corpo humano sofre devido ao excesso de calor e à baixa capacidade de resfriamento. Consequência: aumento de doenças cardiovasculares e respiratórias."
+  },
+  {
+    letter: "S",
+    term: "Supressão vegetal",
+    definition: "Remoção de vegetação."
   }
 ];
 
@@ -37,7 +112,6 @@ const ALPHABET = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".split("");
 const alphabetFilterEl = document.getElementById("alphabetFilter");
 const termsGridEl = document.getElementById("termsGrid");
 const searchInputEl = document.getElementById("searchInput");
-const viewAllBtn = document.getElementById("viewAllBtn");
 
 let activeLetter = null;
 
@@ -45,8 +119,18 @@ function lettersWithTerms() {
   return new Set(GLOSSARY_TERMS.map((t) => t.letter));
 }
 
+// Verifica se a busca digitada é uma única letra (ex: "a", "B")
+function getLetterFromQuery(query) {
+  if (query.length === 1 && /^[a-z]$/i.test(query)) {
+    return query.toUpperCase();
+  }
+  return null;
+}
+
 function buildAlphabet() {
   const available = lettersWithTerms();
+  const typedLetter = getLetterFromQuery(searchInputEl.value.trim().toLowerCase());
+
   alphabetFilterEl.innerHTML = "";
 
   ALPHABET.forEach((letter) => {
@@ -54,9 +138,16 @@ function buildAlphabet() {
     btn.type = "button";
     btn.textContent = letter;
     btn.disabled = !available.has(letter);
-    if (letter === activeLetter) btn.classList.add("active");
+
+    // Destaca a letra clicada OU a letra digitada na busca
+    if (letter === activeLetter || letter === typedLetter) {
+      btn.classList.add("active");
+    }
 
     btn.addEventListener("click", () => {
+      // Clicar numa letra também preenche e limpa a busca de texto,
+      // evitando conflito entre os dois modos de filtro
+      searchInputEl.value = "";
       activeLetter = activeLetter === letter ? null : letter;
       buildAlphabet();
       renderTerms();
@@ -68,13 +159,24 @@ function buildAlphabet() {
 
 function renderTerms() {
   const query = searchInputEl.value.trim().toLowerCase();
+  const typedLetter = getLetterFromQuery(query);
 
   const filtered = GLOSSARY_TERMS.filter((item) => {
     const matchesLetter = !activeLetter || item.letter === activeLetter;
-    const matchesQuery =
-      !query ||
-      item.term.toLowerCase().includes(query) ||
-      item.definition.toLowerCase().includes(query);
+
+    let matchesQuery;
+    if (!query) {
+      matchesQuery = true;
+    } else if (typedLetter) {
+      // Busca de uma única letra: filtra pelos termos daquela inicial
+      matchesQuery = item.letter === typedLetter;
+    } else {
+      // Busca normal: procura no termo e na definição
+      matchesQuery =
+        item.term.toLowerCase().includes(query) ||
+        item.definition.toLowerCase().includes(query);
+    }
+
     return matchesLetter && matchesQuery;
   });
 
@@ -98,11 +200,8 @@ function renderTerms() {
   });
 }
 
-searchInputEl.addEventListener("input", renderTerms);
-
-viewAllBtn.addEventListener("click", () => {
-  activeLetter = null;
-  searchInputEl.value = "";
+searchInputEl.addEventListener("input", () => {
+  // Ao digitar, também atualiza o destaque do alfabeto
   buildAlphabet();
   renderTerms();
 });
