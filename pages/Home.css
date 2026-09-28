@@ -216,16 +216,6 @@ img {
     font-weight: 400;
 }
 
-.hero-dot {
-    position: absolute;
-    z-index: 2;
-    top: 195px;
-    left: 44%;
-    width: 37px;
-    height: 37px;
-    border-radius: 50%;
-    background: #69a7a1;
-}
 
 .benefits-container {
     position: absolute;
@@ -549,10 +539,6 @@ img {
         width: min(373px, 100%);
         min-height: 68px;
         font-size: 20px;
-    }
-
-    .hero-dot {
-        display: none;
     }
 
     .benefits-container {
