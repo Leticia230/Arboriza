@@ -4,6 +4,4 @@ Site desenvolvido para apresentar informações sobre vegetação urbana e sua i
 
 ## 🌐 Site
 
-Acesse o projeto publicado pelo GitHub Pages:
-
-https://leticia230.github.io/Arboriza/
+https://leticia230.github.io/Arboriza/pages/Home.html
