@@ -14,41 +14,32 @@
         rel="stylesheet"
     >
 
+    <link rel="stylesheet" href="Header.css">
     <link rel="stylesheet" href="Home.css">
+    <link rel="stylesheet" href="Footer.css">
+
 </head>
 
 <body>
 
-    <header class="site-header">
-        <div class="header-container">
-            <a href="Home.html" class="brand">
-                <img class="brand-logo" src="../assets/logo.png" alt="Logo Arboriza">
-                <span class="brand-text">
-                    Mais árvores.<br>
-                    Cidades mais frescas.
-                </span>
-            </a>
-
-            <nav class="main-navigation">
-                <a href="Home.html" class="nav-link active">Início</a>
-                <a href="artigos.html" class="nav-link">Artigos</a>
-                <a href="Glossario.html" class="nav-link">Glossário</a>
-                <a href="midia.html" class="nav-link">Mídia</a>
-            </nav>
-        </div>
-    </header>
+    <site-header></site-header>
 
     <main>
 
         <section class="hero" id="inicio">
 
+            <!-- Fundos do carrossel: uma imagem por pergunta (troque pelos seus arquivos) -->
+            <div class="hero-slides" aria-hidden="true">
+                <div class="hero-slide active" style="background-image: url('../assets/imagem1.jpg');"></div>
+                <div class="hero-slide" style="background-image: url('../assets/imagem2.jpg');"></div>
+                <div class="hero-slide" style="background-image: url('../assets/imagem3.jpg');"></div>
+                <div class="hero-slide" style="background-image: url('../assets/imagem4.jpg');"></div>
+                <div class="hero-slide" style="background-image: url('../assets/imagem5.jpg');"></div>
+            </div>
+
             <div class="hero-overlay"></div>
 
             <div class="hero-content">
-
-                <div class="hero-label">
-                    PORTAL INFORMATIVO
-                </div>
 
                 <h1>Arboriza</h1>
 
@@ -64,84 +55,109 @@
 
             </div>
 
-            <div class="benefits-container">
-
-                <div class="benefit-item">
-                    <div class="benefit-icon">
-                        <svg viewBox="0 0 64 64" aria-hidden="true">
-                            <path d="M32 54V27"></path>
-                            <path d="M32 35C22 35 15 29 15 19C25 19 32 25 32 35Z"></path>
-                            <path d="M32 29C42 29 49 23 49 13C39 13 32 19 32 29Z"></path>
-                        </svg>
-                    </div>
-
-                    <p>
-                        Reduz a temperatura<br>
-                        e o calor urbano
-                    </p>
+            <!-- Cartão que muda a cada pergunta (preenchido pelo Home.js) -->
+            <div class="hero-info" aria-live="polite">
+                <div class="hero-info-header">
+                    <div class="hero-info-icon"></div>
+                    <span class="hero-info-eyebrow">Motivo 1 de 5</span>
                 </div>
+                <h2 class="hero-info-question">Como as árvores esfriam a cidade?</h2>
+                <p class="hero-info-text">
+                    A sombra impede que o sol aqueça diretamente o asfalto e as paredes,
+                    e as folhas liberam vapor de água, o que ajuda a baixar a temperatura ao redor.
+                </p>
+            </div>
 
-                <div class="benefit-item">
-                    <div class="benefit-icon">
-                        <svg viewBox="0 0 64 64" aria-hidden="true">
-                            <path d="M32 52C32 52 17 38 17 25C17 16 23 11 32 11C41 11 47 16 47 25C47 38 32 52 32 52Z"></path>
-                            <path d="M24 28C27 31 30 32 34 32C38 32 41 30 43 27"></path>
-                        </svg>
-                    </div>
+            <!-- Menu do carrossel: cada ícone é um motivo/pergunta -->
+            <div class="benefits-wrapper">
 
-                    <p>
-                        Melhora a qualidade<br>
-                        do ar
-                    </p>
-                </div>
+                <h2 class="benefits-title">Por que arborizar?</h2>
 
-                <div class="benefit-item">
-                    <div class="benefit-icon">
-                        <svg viewBox="0 0 64 64" aria-hidden="true">
-                            <path d="M32 12V52"></path>
-                            <path d="M19 20C25 20 30 24 32 30C26 30 21 27 19 20Z"></path>
-                            <path d="M45 20C39 20 34 24 32 30C38 30 43 27 45 20Z"></path>
-                            <path d="M19 34C25 34 30 38 32 44C26 44 21 41 19 34Z"></path>
-                            <path d="M45 34C39 34 34 38 32 44C38 44 43 41 45 34Z"></path>
-                        </svg>
-                    </div>
+                <div class="benefits-container">
 
-                    <p>
-                        Aumenta a umidade<br>
-                        relativa do ar
-                    </p>
-                </div>
+                    <button type="button" class="benefit-item active" aria-pressed="true"
+                        data-question="Como as árvores esfriam a cidade?"
+                        data-text="A sombra impede que o sol aqueça diretamente o asfalto e as paredes, e as folhas liberam vapor de água, o que ajuda a baixar a temperatura ao redor.">
+                        <span class="benefit-icon">
+                            <svg viewBox="0 0 64 64" aria-hidden="true">
+                                <path d="M32 54V27"></path>
+                                <path d="M32 35C22 35 15 29 15 19C25 19 32 25 32 35Z"></path>
+                                <path d="M32 29C42 29 49 23 49 13C39 13 32 19 32 29Z"></path>
+                            </svg>
+                        </span>
+                        <span class="benefit-text">
+                            Reduz a temperatura<br>
+                            e o calor urbano
+                        </span>
+                    </button>
 
-                <div class="benefit-item">
-                    <div class="benefit-icon">
-                        <svg viewBox="0 0 64 64" aria-hidden="true">
-                            <circle cx="32" cy="32" r="21"></circle>
-                            <path d="M23 34C26 39 38 39 41 34"></path>
-                            <path d="M24 25H24.01"></path>
-                            <path d="M40 25H40.01"></path>
-                        </svg>
-                    </div>
+                    <button type="button" class="benefit-item" aria-pressed="false"
+                        data-question="O que as árvores fazem pelo ar que respiramos?"
+                        data-text="As folhas retêm parte das partículas e dos poluentes suspensos, ajudando a deixar o ar mais limpo.">
+                        <span class="benefit-icon">
+                            <svg viewBox="0 0 64 64" aria-hidden="true">
+                                <path d="M32 52C32 52 17 38 17 25C17 16 23 11 32 11C41 11 47 16 47 25C47 38 32 52 32 52Z"></path>
+                                <path d="M24 28C27 31 30 32 34 32C38 32 41 30 43 27"></path>
+                            </svg>
+                        </span>
+                        <span class="benefit-text">
+                            Melhora a qualidade<br>
+                            do ar
+                        </span>
+                    </button>
 
-                    <p>
-                        Promove o bem-estar<br>
-                        e saúde mental
-                    </p>
-                </div>
+                    <button type="button" class="benefit-item" aria-pressed="false"
+                        data-question="Por que a umidade do ar importa?"
+                        data-text="A transpiração das plantas devolve água à atmosfera. Em dias secos, isso deixa o ar menos árido e o ambiente mais confortável.">
+                        <span class="benefit-icon">
+                            <svg viewBox="0 0 64 64" aria-hidden="true">
+                                <path d="M32 12V52"></path>
+                                <path d="M19 20C25 20 30 24 32 30C26 30 21 27 19 20Z"></path>
+                                <path d="M45 20C39 20 34 24 32 30C38 30 43 27 45 20Z"></path>
+                                <path d="M19 34C25 34 30 38 32 44C26 44 21 41 19 34Z"></path>
+                                <path d="M45 34C39 34 34 38 32 44C38 44 43 41 45 34Z"></path>
+                            </svg>
+                        </span>
+                        <span class="benefit-text">
+                            Aumenta a umidade<br>
+                            relativa do ar
+                        </span>
+                    </button>
 
-                <div class="benefit-item">
-                    <div class="benefit-icon">
-                        <svg viewBox="0 0 64 64" aria-hidden="true">
-                            <path d="M32 53V28"></path>
-                            <path d="M32 35C21 35 15 28 15 18C25 18 32 24 32 35Z"></path>
-                            <path d="M32 30C43 30 49 23 49 13C39 13 32 19 32 30Z"></path>
-                            <path d="M20 53H44"></path>
-                        </svg>
-                    </div>
+                    <button type="button" class="benefit-item" aria-pressed="false"
+                        data-question="Árvores fazem bem à saúde mental?"
+                        data-text="Áreas verdes ajudam a reduzir o estresse e incentivam o convívio e as atividades ao ar livre.">
+                        <span class="benefit-icon">
+                            <svg viewBox="0 0 64 64" aria-hidden="true">
+                                <circle cx="32" cy="32" r="21"></circle>
+                                <path d="M23 34C26 39 38 39 41 34"></path>
+                                <path d="M24 25H24.01"></path>
+                                <path d="M40 25H40.01"></path>
+                            </svg>
+                        </span>
+                        <span class="benefit-text">
+                            Promove o bem-estar<br>
+                            e saúde mental
+                        </span>
+                    </button>
 
-                    <p>
-                        Torna as cidades<br>
-                        melhores
-                    </p>
+                    <button type="button" class="benefit-item" aria-pressed="false"
+                        data-question="O que muda quando a cidade é mais verde?"
+                        data-text="Somando esses efeitos, ruas arborizadas ficam mais frescas, saudáveis e agradáveis para todos.">
+                        <span class="benefit-icon">
+                            <svg viewBox="0 0 64 64" aria-hidden="true">
+                                <path d="M32 53V28"></path>
+                                <path d="M32 35C21 35 15 28 15 18C25 18 32 24 32 35Z"></path>
+                                <path d="M32 30C43 30 49 23 49 13C39 13 32 19 32 30Z"></path>
+                                <path d="M20 53H44"></path>
+                            </svg>
+                        </span>
+                        <span class="benefit-text">
+                            Torna as cidades<br>
+                            melhores
+                        </span>
+                    </button>
+
                 </div>
 
             </div>
@@ -208,44 +224,18 @@
 
         <section class="city-image-section">
             <img
-                src="../assets/imagem.png"
+                src="../assets/footer.png"
                 alt="Vegetação urbana e edifícios"
             >
         </section>
 
+        <site-footer></site-footer>
+
     </main>
 
-    <footer class="site-footer">
-        <div class="footer-container">
-            <div class="footer-brand">
-                <img class="footer-logo" src="../assets/logo-branca.png" alt="Logo Arboriza">
-                <span class="footer-line"></span>
-                <p>
-                    Mais árvores.<br>
-                    Cidades mais frescas.
-                </p>
-            </div>
-
-            <p class="copyright">Copyright © 2026 – Arboriza</p>
-
-            <div class="footer-message">
-                <div class="footer-leaf">
-                    <svg viewBox="0 0 64 64" aria-hidden="true">
-                        <path d="M32 58V25"></path>
-                        <path d="M32 35C20 34 12 27 10 17C22 17 30 23 32 35Z"></path>
-                        <path d="M32 43C44 42 52 35 54 25C42 25 34 31 32 43Z"></path>
-                    </svg>
-                </div>
-
-                <p>
-                    Juntos por cidades<br>
-                    mais verdes.
-                </p>
-            </div>
-        </div>
-    </footer>
-
     <script src="Home.js"></script>
+    <script src="Header.js"></script>
+    <script src="Footer.js"></script>
 
 </body>
 </html>
