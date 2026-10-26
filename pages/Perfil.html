@@ -1,0 +1,77 @@
+
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Meu perfil | Arboriza</title>
+
+    <link rel="stylesheet" href="header.css">
+    <link rel="stylesheet" href="conta.css">
+    <link rel="stylesheet" href="footer.css">
+
+    <script src="header.js" defer></script>
+    <script type="module" src="conta.js"></script>
+    <script src="Footer.js" defer></script>
+    
+</head>
+<body>
+    <site-header></site-header>
+
+    <main class="account-main">
+        <section class="account-card">
+            <p class="account-eyebrow">Sua conta</p>
+
+            <div class="profile-avatar" id="profile-avatar">A</div>
+
+            <h1>Meu perfil</h1>
+            <p class="account-description">
+                Consulte e atualize suas informações no Arboriza.
+            </p>
+
+            <div class="profile-details">
+                <p>
+                    <strong>Nome:</strong>
+                    <span id="profile-name">Carregando...</span>
+                </p>
+
+                <p>
+                    <strong>Email:</strong>
+                    <span id="profile-email">Carregando...</span>
+                </p>
+            </div>
+
+            <form id="edit-profile-form" class="account-form">
+                <div class="account-field">
+                    <label for="edit-name">Alterar nome</label>
+                    <input
+                        type="text"
+                        id="edit-name"
+                        maxlength="80"
+                        autocomplete="name"
+                        required
+                    >
+                </div>
+
+                <div id="profile-message" class="account-message"
+                     role="status" aria-live="polite"></div>
+
+                <button class="account-button" type="submit">
+                    Salvar alterações
+                </button>
+
+                <button
+                    class="account-button"
+                    type="button"
+                    id="logout-button"
+                >
+                    Sair da conta
+                </button>
+            </form>
+        </section>
+    </main>
+
+     <site-footer></site-footer>
+
+    </body>
+</html>

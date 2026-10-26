@@ -1,0 +1,99 @@
+
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Criar conta | Arboriza</title>
+
+    <link rel="stylesheet" href="conta.css">
+    <link rel="stylesheet" href="footer.css">
+    <link rel="stylesheet" href="header.css">
+
+    <script src="header.js" defer></script>
+    <script type="module" src="conta.js"></script>
+    <script src="Footer.js" defer></script>
+</head>
+<body>
+    <site-header></site-header>
+
+    <main class="account-main">
+        <section class="account-card">
+            <p class="account-eyebrow">Faça parte</p>
+            <h1>Criar conta</h1>
+            <p class="account-description">
+                Crie seu perfil e acompanhe as iniciativas por cidades mais verdes.
+            </p>
+
+            <form id="register-form" class="account-form">
+                <div class="account-field">
+                    <label for="register-name">Nome</label>
+                    <input
+                        type="text"
+                        id="register-name"
+                        autocomplete="name"
+                        placeholder="Seu nome"
+                        maxlength="80"
+                        required
+                    >
+                </div>
+
+                <div class="account-field">
+                    <label for="register-email">Email</label>
+                    <input
+                        type="email"
+                        id="register-email"
+                        autocomplete="email"
+                        placeholder="voce@exemplo.com"
+                        required
+                    >
+                </div>
+
+                <div class="account-field">
+                    <label for="register-password">Senha</label>
+                    <input
+                        type="password"
+                        id="register-password"
+                        autocomplete="new-password"
+                        minlength="6"
+                        placeholder="Pelo menos 6 caracteres"
+                        required
+                    >
+                </div>
+
+                <div class="account-field">
+                    <label for="register-confirm">Confirmar senha</label>
+                    <input
+                        type="password"
+                        id="register-confirm"
+                        autocomplete="new-password"
+                        minlength="6"
+                        placeholder="Digite a senha novamente"
+                        required
+                    >
+                </div>
+
+                <div id="register-message" class="account-message"
+                     role="status" aria-live="polite"></div>
+
+                <button class="account-button" type="submit">
+                    Criar minha conta
+                </button>
+            </form>
+
+            <div class="account-links">
+                <span>
+                    Já tem uma conta?
+                    <a href="Login.html">Entre aqui</a>
+                </span>
+            </div>
+        </section>
+    </main>
+
+    <site-footer></site-footer>
+
+    <script type="module" src="conta.js"></script>
+    <script type="module" src="auth.js"></script>
+
+</body>
+</html>

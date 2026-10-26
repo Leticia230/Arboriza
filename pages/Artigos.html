@@ -1,0 +1,118 @@
+
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Arboriza - Pesquisa</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    <link href="https://fonts.googleapis.com/css2?family=Alice&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="Artigos.css">
+
+    <link rel="stylesheet" href="header.css">
+    <link rel="stylesheet" href="footer.css">
+
+    <!-- Componente compartilhado de cabeçalho e rodapé -->
+    
+</head>
+
+<body>
+    <site-header></site-header>
+
+    <main class="pesquisa-main">
+
+        <section class="pesquisa-banner" aria-labelledby="titulo-pesquisa">
+            <div class="pesquisa-banner-titulo">
+                <div class="pesquisa-icone" aria-hidden="true">
+                    <svg viewBox="0 0 24 24" fill="none">
+                        <circle cx="10.8" cy="10.8" r="6.8"
+                            stroke="currentColor" stroke-width="2.2"/>
+                        <path d="M16 16L21 21"
+                            stroke="currentColor"
+                            stroke-width="2.2"
+                            stroke-linecap="round"/>
+                    </svg>
+                </div>
+
+                <h1 id="titulo-pesquisa">Pesquisa</h1>
+            </div>
+
+            <p>
+                Entenda os principais termos e conceitos sobre arborização
+                urbana e clima.
+            </p>
+        </section>
+
+        <section class="pesquisa-conteudo" aria-label="Buscar artigos">
+            <form id="form-pesquisa" class="pesquisa-form">
+                <label for="campo-pesquisa" class="visually-hidden">
+                    Pesquisar artigos
+                </label>
+
+                <input
+                    type="search"
+                    id="campo-pesquisa"
+                    placeholder="Pesquisar artigos..."
+                    value="Vegetação Urbana"
+                    autocomplete="off"
+                >
+
+                <button type="submit" aria-label="Pesquisar">
+                    <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                        <circle cx="10.8" cy="10.8" r="6.8"
+                            stroke="currentColor" stroke-width="2"/>
+                        <path d="M16 16L21 21"
+                            stroke="currentColor"
+                            stroke-width="2"
+                            stroke-linecap="round"/>
+                    </svg>
+                </button>
+            </form>
+
+            <div class="pesquisa-resultados-topo">
+                <p id="contador-resultados" aria-live="polite"></p>
+                <button id="limpar-pesquisa" type="button">
+                    Limpar busca
+                </button>
+            </div>
+
+            <div
+                id="lista-artigos"
+                class="lista-artigos"
+                aria-live="polite"
+            ></div>
+
+            <div id="mensagem-vazia" class="mensagem-vazia" hidden>
+                <span aria-hidden="true">🔎</span>
+                <h2>Nenhum artigo encontrado</h2>
+                <p>
+                    Tente pesquisar por outro termo, como clima, árvores,
+                    biodiversidade ou arborização.
+                </p>
+                <button id="ver-todos" type="button">
+                    Ver todos os artigos
+                </button>
+            </div>
+        </section>
+
+    </main>
+
+    <section class="city-image-section">
+        <img
+            src="../assets/footer.png"
+            alt="Vegetação urbana e edifícios"
+        >
+    </section>
+
+    <site-footer></site-footer>
+
+    <script src="header.js" defer></script>
+    <script src="Footer.js" defer></script>
+    <script src="Artigos.js" defer></script>
+</body>
+</html>

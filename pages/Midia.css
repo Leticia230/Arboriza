@@ -1,0 +1,480 @@
+
+/* =========================================
+   ARBORIZA | MÍDIA
+   Base alinhada à página Home
+   ========================================= */
+
+@import url('https://fonts.googleapis.com/css2?family=Alice&family=DM+Sans:wght@400;500;600;700&family=Lora:wght@400;500;600&display=swap');
+
+:root {
+    --green-dark: #1b3b24;
+    --green-primary: #2f5d3a;
+    --green-mid: #4c7a52;
+    --green-soft: #74a57f;
+    --green-pale: #eef3ea;
+
+    --cream: #f7f6f1;
+    --white: #ffffff;
+    --black: #111111;
+
+    --text-main: #29342b;
+    --text-muted: #6b756c;
+    --border-soft: #e1e5da;
+
+    /* Cores complementares da tela Mídia */
+    --midia-green-dark: #005931;
+    --midia-green-light: #EBF0E4;
+    --midia-tab-inactive: #E5E8DA;
+    --midia-tab-hover: #D8DAC8;
+    --midia-border: #C5D4B8;
+}
+
+/* =========================================
+   RESET GLOBAL
+   ========================================= */
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html {
+    width: 100%;
+    min-height: 100%;
+    margin: 0;
+    padding: 0;
+    overflow-x: clip;
+    scroll-behavior: smooth;
+    overscroll-behavior-y: none;
+}
+
+body {
+    width: 100%;
+    min-height: 100vh;
+    margin: 0;
+    padding: 0;
+
+    display: flex;
+    flex-direction: column;
+
+    background: var(--cream);
+    color: var(--text-main);
+    font-family: "DM Sans", sans-serif;
+
+    overflow-x: clip;
+    -webkit-font-smoothing: antialiased;
+}
+
+/* =========================================
+   HEADER E FOOTER COMPARTILHADOS
+   ========================================= */
+
+/*
+   Custom elements são inline por padrão.
+   Torná-los block ajuda a manter o layout
+   consistente entre as páginas.
+*/
+
+site-header,
+site-footer {
+    display: block;
+    width: 100%;
+    flex: 0 0 auto;
+}
+
+/* Evita que regras globais da página
+   alterem links e imagens dos componentes. */
+
+site-header img,
+site-footer img {
+    max-width: 100%;
+}
+
+/* =========================================
+   CONTEÚDO PRINCIPAL
+   ========================================= */
+
+main {
+    padding-top: 0;
+}
+
+/* Aplica o espaçamento flexível apenas
+   ao conteúdo principal da tela Mídia. */
+
+body > main {
+    flex: 1 0 auto;
+    width: 100%;
+    max-width: 1024px;
+    margin: 0 auto;
+    padding: 40px 24px 56px;
+
+    display: flex;
+    flex-direction: column;
+    gap: 32px;
+}
+
+/* =========================================
+   HERO DA MÍDIA
+   ========================================= */
+
+body > main > section:first-child {
+    width: 100%;
+    background: var(--green-pale);
+    border: 1px solid var(--border-soft);
+    border-radius: 24px;
+    padding: 32px;
+
+    box-shadow: 0 3px 12px rgba(27, 59, 36, 0.04);
+}
+
+/* Título principal */
+
+body > main h1 {
+    font-family: "Alice", "Lora", serif;
+    color: var(--green-primary);
+    font-weight: 400;
+    line-height: 1.15;
+}
+
+/* Descrição do banner */
+
+body > main > section:first-child p {
+    color: var(--text-main);
+    font-family: "DM Sans", sans-serif;
+    font-size: 15px;
+    line-height: 1.65;
+}
+
+/* =========================================
+   ABAS DE CATEGORIAS
+   ========================================= */
+
+nav[aria-label="Categorias de mídia"] {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 12px;
+    width: 100%;
+    margin: 0;
+}
+
+nav[aria-label="Categorias de mídia"] button {
+    min-height: 44px;
+    padding: 11px 22px;
+
+    border: 1px solid transparent;
+    border-radius: 12px;
+
+    font-family: "DM Sans", sans-serif;
+    font-size: 15px;
+    cursor: pointer;
+
+    transition:
+        background-color 0.2s ease,
+        color 0.2s ease,
+        box-shadow 0.2s ease;
+}
+
+.midia-tab-ativa {
+    background: var(--green-primary) !important;
+    color: var(--white) !important;
+    border-color: var(--green-primary) !important;
+    font-weight: 700 !important;
+    box-shadow: 0 3px 8px rgba(27, 59, 36, 0.15);
+}
+
+.midia-tab-inativa {
+    background: var(--green-pale) !important;
+    color: var(--green-primary) !important;
+    border-color: var(--border-soft) !important;
+    font-weight: 600 !important;
+}
+
+.midia-tab-inativa:hover {
+    background: #dfe9d9 !important;
+}
+
+nav[aria-label="Categorias de mídia"] button:focus-visible {
+    outline: 3px solid #b8d86a;
+    outline-offset: 3px;
+}
+
+/* =========================================
+   TÍTULO DA CATEGORIA
+   ========================================= */
+
+#section-title {
+    margin: 0 0 22px;
+    color: var(--green-primary);
+    font-family: "Alice", "Lora", serif;
+    font-size: 27px;
+    font-weight: 400;
+    line-height: 1.3;
+}
+
+/* Lista de cartões */
+
+#cards-container {
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+    width: 100%;
+}
+
+/* =========================================
+   CARTÕES DE MÍDIA
+   ========================================= */
+
+.midia-card {
+    display: flex;
+    align-items: flex-start;
+    gap: 20px;
+
+    width: 100%;
+    padding: 24px;
+
+    background: var(--white);
+    border: 1px solid var(--border-soft);
+    border-radius: 18px;
+
+    box-shadow: 0 3px 10px rgba(27, 59, 36, 0.04);
+
+    transition:
+        transform 0.2s ease,
+        box-shadow 0.2s ease;
+}
+
+.midia-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 7px 18px rgba(27, 59, 36, 0.09);
+}
+
+.midia-card-icone {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    flex: 0 0 58px;
+    width: 58px;
+    height: 58px;
+
+    border-radius: 15px;
+    background: var(--green-pale);
+    font-size: 28px;
+}
+
+.midia-card-conteudo {
+    flex: 1;
+    min-width: 0;
+}
+
+.midia-card-tipo {
+    display: inline-block;
+    margin-bottom: 8px;
+
+    color: var(--green-mid);
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+}
+
+.midia-card-titulo {
+    margin: 0 0 10px;
+
+    color: var(--green-primary);
+    font-family: "Alice", "Lora", serif;
+    font-size: 23px;
+    font-weight: 400;
+    line-height: 1.35;
+}
+
+.midia-card-descricao {
+    margin: 0 0 18px;
+
+    color: var(--text-muted);
+    font-size: 15px;
+    line-height: 1.7;
+}
+
+.midia-card-link {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    min-height: 42px;
+    padding: 10px 17px;
+
+    border-radius: 10px;
+    background: var(--green-primary);
+    color: var(--white);
+
+    font-size: 14px;
+    font-weight: 700;
+    text-decoration: none;
+
+    transition: background-color 0.2s ease;
+}
+
+.midia-card-link:hover {
+    background: var(--green-dark);
+    color: var(--white);
+}
+
+.midia-card-link:focus-visible {
+    outline: 3px solid #b8d86a;
+    outline-offset: 3px;
+}
+
+/* =========================================
+   IMAGEM DECORATIVA ANTES DO FOOTER
+   ========================================= */
+
+body > aside {
+    display: block;
+    width: 100%;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    line-height: 0;
+    flex: 0 0 auto;
+}
+
+body > aside img {
+    display: block;
+    width: 100%;
+    max-width: none;
+    height: auto;
+    margin: 0;
+    padding: 0;
+    object-fit: cover;
+}
+
+/* =========================================
+   RESPONSIVIDADE
+   ========================================= */
+
+@media (max-width: 800px) {
+    body > main {
+        padding: 30px 20px 42px;
+        gap: 28px;
+    }
+
+    body > main > section:first-child {
+        padding: 25px;
+        border-radius: 20px;
+    }
+
+    #section-title {
+        font-size: 24px;
+    }
+
+    .midia-card {
+        padding: 21px;
+        gap: 16px;
+    }
+
+    .midia-card-titulo {
+        font-size: 21px;
+    }
+}
+
+@media (max-width: 520px) {
+    body > main {
+        padding: 24px 16px 36px;
+        gap: 24px;
+    }
+
+    body > main > section:first-child {
+        padding: 22px 18px;
+        border-radius: 18px;
+    }
+
+    nav[aria-label="Categorias de mídia"] {
+        gap: 8px;
+    }
+
+    nav[aria-label="Categorias de mídia"] button {
+        flex: 1 1 auto;
+        padding: 10px 12px;
+        font-size: 13px;
+    }
+
+    #section-title {
+        font-size: 22px;
+        margin-bottom: 17px;
+    }
+
+    .midia-card {
+        gap: 13px;
+        padding: 17px;
+        border-radius: 15px;
+    }
+
+    .midia-card-icone {
+        flex-basis: 43px;
+        width: 43px;
+        height: 43px;
+        border-radius: 11px;
+        font-size: 22px;
+    }
+
+    .midia-card-titulo {
+        font-size: 18px;
+    }
+
+    .midia-card-descricao {
+        font-size: 14px;
+        line-height: 1.65;
+    }
+
+    .midia-card-link {
+        min-height: 40px;
+        padding: 9px 12px;
+        font-size: 13px;
+    }
+}
+
+/* =========================================
+   ACESSIBILIDADE
+   ========================================= */
+
+@media (prefers-reduced-motion: reduce) {
+    html {
+        scroll-behavior: auto;
+    }
+
+    *,
+    *::before,
+    *::after {
+        transition-duration: 0.01ms !important;
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+    }
+}
+
+.w-6 {
+    height: 55px;
+    width: 35px;
+    margin: 0;
+    padding: 0;
+}
+
+.city-image-section {
+    width: 100%;
+    margin: 0;
+    padding: 0;
+    line-height: 0;
+    overflow: hidden;
+}
+
+.city-image-section img {
+    display: block;
+    width: 100%;
+    height: auto;
+    max-width: none;
+    margin: 0;
+    padding: 0;
+}
