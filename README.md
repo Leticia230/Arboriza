@@ -30,6 +30,8 @@ O **Arboriza** reúne conteúdos relacionados à vegetação urbana, permitindo 
 - Rafael Guerra Lacerda Almeida
 - Thomás da Silva Marques Pereira
 
+---
+
 ## 💻 Site
 
 🌐 **Acesse o site:** 
