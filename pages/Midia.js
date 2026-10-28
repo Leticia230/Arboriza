@@ -1,4 +1,3 @@
-
 document.addEventListener('DOMContentLoaded', () => {
     const container = document.getElementById('cards-container');
     const sectionTitle = document.getElementById('section-title');
@@ -16,8 +15,6 @@ document.addEventListener('DOMContentLoaded', () => {
         return;
     }
 
-    // Catálogo de conteúdos com links diretos.
-    // Os links são abertos em uma nova aba.
     const midias = {
         podcast: [
             {
@@ -118,7 +115,6 @@ document.addEventListener('DOMContentLoaded', () => {
         documentarios: 'Conteúdos especiais sobre sustentabilidade'
     };
 
-    // Atualiza os nomes das abas sem modificar seus IDs.
     if (buttons.filmes) {
         buttons.filmes.textContent = 'Vídeos';
     }
@@ -175,7 +171,6 @@ document.addEventListener('DOMContentLoaded', () => {
             return;
         }
 
-        // Atualiza a aparência e a acessibilidade das abas.
         Object.entries(buttons).forEach(([nome, botao]) => {
             if (!botao) return;
 
@@ -186,13 +181,10 @@ document.addEventListener('DOMContentLoaded', () => {
             botao.setAttribute('aria-pressed', String(ativo));
         });
 
-        // Atualiza o título da seção.
         sectionTitle.textContent = titulos[categoria];
 
-        // Limpa os cartões anteriores.
         container.replaceChildren();
 
-        // Cria os cartões da categoria selecionada.
         const fragmento = document.createDocumentFragment();
 
         midias[categoria].forEach((midia) => {
@@ -202,7 +194,6 @@ document.addEventListener('DOMContentLoaded', () => {
         container.appendChild(fragmento);
     }
 
-    // Adiciona os eventos aos botões existentes.
     Object.entries(buttons).forEach(([categoria, botao]) => {
         if (!botao) return;
 
@@ -211,10 +202,6 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 
-    // Mantém compatibilidade com onclick="switchTab(...)"
-    // caso essa chamada ainda exista no HTML.
     window.switchTab = switchTab;
-
-    // Exibe a primeira categoria ao abrir a página.
     switchTab('podcast');
 });

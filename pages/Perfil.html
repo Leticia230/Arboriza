@@ -1,77 +1,448 @@
-
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Meu perfil | Arboriza</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#203d2b">
+  <meta name="description" content="Consulte seu perfil e acompanhe suas missões no VerdeQuest.">
+  <title>Meu perfil | VerdeQuest</title>
 
-    <link rel="stylesheet" href="header.css">
-    <link rel="stylesheet" href="conta.css">
-    <link rel="stylesheet" href="footer.css">
+  <link rel="stylesheet" href="../verdequest/verdequest.css">
 
-    <script src="header.js" defer></script>
-    <script type="module" src="conta.js"></script>
-    <script src="Footer.js" defer></script>
-    
+  <style>
+    .vq-profile-main {
+      max-width: 1100px;
+      width: calc(100% - 40px);
+      margin: 0 auto;
+      padding: 64px 0 90px;
+    }
+
+    .vq-profile-heading {
+      margin-bottom: 32px;
+    }
+
+    .vq-profile-heading h1 {
+      margin: 8px 0 12px;
+      font-size: clamp(2.2rem, 5vw, 4rem);
+      line-height: 1.1;
+    }
+
+    .vq-profile-heading h1 em {
+      color: #64815e;
+    }
+
+    .vq-profile-heading > p:last-child {
+      max-width: 620px;
+      line-height: 1.7;
+    }
+
+    .vq-profile-layout {
+      display: grid;
+      grid-template-columns: minmax(0, 0.85fr) minmax(0, 1.5fr);
+      gap: 24px;
+      align-items: start;
+    }
+
+    .vq-profile-card,
+    .vq-profile-missions {
+      min-width: 0;
+      padding: clamp(22px, 4vw, 36px);
+      border: 1px solid #e5e5dc;
+      border-radius: 22px;
+      background: #fffefa;
+    }
+
+    .vq-profile-avatar {
+      display: grid;
+      width: 76px;
+      height: 76px;
+      margin-bottom: 20px;
+      place-items: center;
+      border-radius: 50%;
+      background: #e7ecdf;
+      color: #294b32;
+      font-size: 2rem;
+      font-weight: 600;
+    }
+
+    .vq-profile-card h2,
+    .vq-profile-missions h2 {
+      margin: 0 0 10px;
+      font-size: 1.55rem;
+    }
+
+    .vq-profile-description {
+      line-height: 1.65;
+      overflow-wrap: anywhere;
+    }
+
+    .vq-profile-details {
+      display: grid;
+      gap: 18px;
+      margin: 28px 0;
+    }
+
+    .vq-profile-details div {
+      padding-bottom: 14px;
+      border-bottom: 1px solid #e5e5dc;
+    }
+
+    .vq-profile-details dt {
+      margin-bottom: 6px;
+      color: #777d70;
+      font-size: 0.8rem;
+    }
+
+    .vq-profile-details dd {
+      margin: 0;
+      overflow-wrap: anywhere;
+      font-weight: 500;
+    }
+
+    .vq-profile-button {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 44px;
+      padding: 12px 20px;
+      border: 1px solid #d8ddd1;
+      border-radius: 999px;
+      background: transparent;
+      color: #294b32;
+      font: inherit;
+      text-decoration: none;
+      cursor: pointer;
+    }
+
+    .vq-profile-button:hover {
+      background: #edf0e8;
+    }
+
+    .vq-profile-button:disabled {
+      cursor: wait;
+      opacity: 0.6;
+    }
+
+    .vq-profile-message {
+      min-height: 1.4em;
+      margin-top: 12px;
+      font-size: 0.9rem;
+    }
+
+    .vq-profile-missions-header {
+      margin-bottom: 24px;
+    }
+
+    .vq-profile-missions-header p:last-child {
+      line-height: 1.6;
+    }
+
+    .vq-profile-mission-list {
+      display: grid;
+      gap: 12px;
+    }
+
+    .vq-profile-mission {
+      display: grid;
+      grid-template-columns: 44px minmax(0, 1fr);
+      gap: 14px;
+      align-items: start;
+      padding: 18px;
+      border: 1px solid #e5e5dc;
+      border-radius: 16px;
+      background: #fff;
+    }
+
+    .vq-profile-mission.is-complete {
+      background: #f0f4eb;
+      border-color: #d5dfcb;
+    }
+
+    .vq-profile-mission-icon {
+      display: grid;
+      width: 44px;
+      height: 44px;
+      place-items: center;
+      border-radius: 13px;
+      background: #edf0e8;
+      font-size: 1.35rem;
+    }
+
+    .vq-profile-mission h3 {
+      margin: 2px 0 7px;
+      font-size: 1.05rem;
+    }
+
+    .vq-profile-mission p {
+      margin: 0;
+      line-height: 1.55;
+      font-size: 0.92rem;
+    }
+
+    .vq-profile-mission-status {
+      display: inline-block;
+      margin-top: 10px;
+      color: #63755a;
+      font-size: 0.8rem;
+      font-weight: 600;
+    }
+
+    .vq-profile-empty {
+      padding: 20px;
+      border: 1px dashed #d8ddd1;
+      border-radius: 14px;
+      line-height: 1.6;
+    }
+
+    .vq-profile-footer {
+      margin-top: 0;
+    }
+
+    @media (max-width: 760px) {
+      .vq-profile-main {
+        padding-top: 40px;
+      }
+
+      .vq-profile-layout {
+        grid-template-columns: minmax(0, 1fr);
+      }
+
+      .vq-profile-card,
+      .vq-profile-missions {
+        padding: 22px;
+      }
+    }
+  </style>
+
+  <script type="module" src="./conta.js"></script>
 </head>
-<body>
-    <site-header></site-header>
 
-    <main class="account-main">
-        <section class="account-card">
-            <p class="account-eyebrow">Sua conta</p>
+<body class="verdequest-page">
 
-            <div class="profile-avatar" id="profile-avatar">A</div>
+  <header class="vq-header">
+    <a class="vq-brand" href="../verdequest/index.html" aria-label="VerdeQuest, início">
+      VerdeQuest<span>.</span>
+    </a>
 
-            <h1>Meu perfil</h1>
-            <p class="account-description">
-                Consulte e atualize suas informações no Arboriza.
-            </p>
+    <nav class="vq-nav" aria-label="Navegação principal">
+      <a href="../verdequest/index.html#catalogo">Plantas</a>
+      <a href="../verdequest/index.html#missoes">Missões</a>
+      <a href="../verdequest/index.html#meu-jardim">Meu jardim</a>
+      <a href="../verdequest/index.html#simulador">Orçamento</a>
+    </nav>
 
-            <div class="profile-details">
-                <p>
-                    <strong>Nome:</strong>
-                    <span id="profile-name">Carregando...</span>
-                </p>
+    <a class="vq-account" href="./Perfil.html" aria-current="page">
+      Minha conta
+    </a>
 
-                <p>
-                    <strong>Email:</strong>
-                    <span id="profile-email">Carregando...</span>
-                </p>
-            </div>
+    <button
+      class="vq-menu-toggle"
+      id="menuToggle"
+      type="button"
+      aria-label="Abrir menu"
+      aria-expanded="false">
+      Menu
+    </button>
+  </header>
 
-            <form id="edit-profile-form" class="account-form">
-                <div class="account-field">
-                    <label for="edit-name">Alterar nome</label>
-                    <input
-                        type="text"
-                        id="edit-name"
-                        maxlength="80"
-                        autocomplete="name"
-                        required
-                    >
-                </div>
+  <main class="vq-profile-main">
 
-                <div id="profile-message" class="account-message"
-                     role="status" aria-live="polite"></div>
+    <section class="vq-profile-heading">
+      <p class="vq-eyebrow vq-eyebrow-dark">SEU ESPAÇO NO VERDEQUEST</p>
+      <h1>Meu <em>perfil.</em></h1>
+      <p>
+        Acompanhe suas informações e veja como está avançando
+        na sua jornada de descobertas botânicas.
+      </p>
+    </section>
 
-                <button class="account-button" type="submit">
-                    Salvar alterações
-                </button>
+    <div class="vq-profile-layout">
 
-                <button
-                    class="account-button"
-                    type="button"
-                    id="logout-button"
-                >
-                    Sair da conta
-                </button>
-            </form>
-        </section>
-    </main>
+      <section class="vq-profile-card" aria-labelledby="profileTitle">
+        <div class="vq-profile-avatar" id="profile-avatar" aria-hidden="true">V</div>
 
-     <site-footer></site-footer>
+        <h2 id="profileTitle">Minha conta</h2>
+        <p class="vq-profile-description">
+          Estas são as informações da sua conta no VerdeQuest.
+        </p>
 
-    </body>
+        <dl class="vq-profile-details">
+          <div>
+            <dt>Nome</dt>
+            <dd id="profile-name">Carregando...</dd>
+          </div>
+
+          <div>
+            <dt>Email</dt>
+            <dd id="profile-email">Carregando...</dd>
+          </div>
+        </dl>
+
+        <button class="vq-profile-button" type="button" id="logout-button">
+          Sair da conta
+        </button>
+
+        <p
+          class="vq-profile-message"
+          id="profile-message"
+          role="status"
+          aria-live="polite"></p>
+      </section>
+
+      <section class="vq-profile-missions" aria-labelledby="profileMissionsTitle">
+        <div class="vq-profile-missions-header">
+          <p class="vq-eyebrow vq-eyebrow-dark">SUA JORNADA</p>
+          <h2 id="profileMissionsTitle">Minhas missões</h2>
+          <p>Acompanhe as missões concluídas e as próximas descobertas.</p>
+        </div>
+
+        <div
+          class="vq-profile-mission-list"
+          id="profile-mission-list"
+          aria-live="polite">
+          <p class="vq-profile-empty">Carregando suas missões...</p>
+        </div>
+      </section>
+
+    </div>
+  </main>
+
+  <footer class="vq-footer vq-profile-footer">
+    <a class="vq-brand vq-footer-brand" href="../verdequest/index.html">
+      VerdeQuest<span>.</span>
+    </a>
+
+    <p>Feito para cultivar curiosidade, um broto de cada vez.</p>
+
+    <a href="../verdequest/index.html#catalogo">Voltar ao herbário</a>
+  </footer>
+
+  <script type="module">
+    import { auth } from "./firebaseConfig.js";
+    import {
+      onAuthStateChanged
+    } from "https://www.gstatic.com/firebasejs/13.1.0/firebase-auth.js";
+
+    const $ = (selector) => document.querySelector(selector);
+
+    const missionDefinitions = [
+      {
+        id: "first-plant",
+        title: "Primeira companheira",
+        description: "Conheça e aceite uma planta para iniciar sua coleção.",
+        emoji: "🌱"
+      },
+      {
+        id: "garden-starter",
+        title: "Um cantinho verde",
+        description: "Coloque pelo menos uma planta no cenário.",
+        emoji: "🪴"
+      },
+      {
+        id: "plant-explorer",
+        title: "Curiosidade botânica",
+        description: "Abra a apresentação de três plantas diferentes.",
+        emoji: "🔎"
+      },
+      {
+        id: "team-garden",
+        title: "Jardim em equipe",
+        description: "Posicione três plantas aceitas no seu ambiente.",
+        emoji: "🌿"
+      },
+      {
+        id: "space-planner",
+        title: "Arquiteto verde",
+        description: "Personalize seu ambiente e salve as configurações.",
+        emoji: "🏡"
+      },
+      {
+        id: "microclimate",
+        title: "Pequeno laboratório",
+        description: "Explore as configurações de temperatura e umidade.",
+        emoji: "🌡️"
+      }
+    ];
+
+    function escapeHtml(value) {
+      return String(value ?? "").replace(/[&<>"']/g, char => ({
+        "&": "&amp;",
+        "<": "&lt;",
+        ">": "&gt;",
+        '"': "&quot;",
+        "'": "&#39;"
+      })[char]);
+    }
+
+    function renderMissions(uid) {
+      const list = $("#profile-mission-list");
+
+      try {
+        const key = `verdequest_missoes_${uid}`;
+        const stored = JSON.parse(localStorage.getItem(key) || "[]");
+        const completed = new Set(
+          Array.isArray(stored) ? stored.map(String) : []
+        );
+
+        list.innerHTML = missionDefinitions.map(mission => {
+          const isComplete = completed.has(mission.id);
+
+          return `
+            <article class="vq-profile-mission ${isComplete ? "is-complete" : ""}">
+              <span class="vq-profile-mission-icon" aria-hidden="true">
+                ${mission.emoji}
+              </span>
+              <div>
+                <h3>${escapeHtml(mission.title)}</h3>
+                <p>${escapeHtml(mission.description)}</p>
+                <span class="vq-profile-mission-status">
+                  ${isComplete ? "✓ Missão concluída" : "Em andamento"}
+                </span>
+              </div>
+            </article>
+          `;
+        }).join("");
+      } catch (error) {
+        console.error("Não foi possível carregar as missões:", error);
+        list.innerHTML = `
+          <p class="vq-profile-empty">
+            Não foi possível carregar as missões. Volte ao VerdeQuest
+            e tente novamente.
+          </p>
+        `;
+      }
+    }
+
+    onAuthStateChanged(auth, usuario => {
+      if (!usuario) {
+        window.location.replace("./Login.html");
+        return;
+      }
+
+      const name = usuario.displayName || "Usuário VerdeQuest";
+
+      $("#profile-avatar").textContent =
+        name.trim().charAt(0).toUpperCase() || "V";
+
+      renderMissions(usuario.uid);
+    });
+
+    const menuToggle = $("#menuToggle");
+    const nav = document.querySelector(".vq-nav");
+
+    menuToggle?.addEventListener("click", () => {
+      const open = menuToggle.getAttribute("aria-expanded") !== "true";
+      menuToggle.setAttribute("aria-expanded", String(open));
+      nav?.classList.toggle("is-open", open);
+    });
+
+    nav?.querySelectorAll("a").forEach(link => {
+      link.addEventListener("click", () => {
+        nav.classList.remove("is-open");
+        menuToggle?.setAttribute("aria-expanded", "false");
+      });
+    });
+  </script>
+
+</body>
 </html>

@@ -1,4 +1,3 @@
-
 import { auth } from "./firebaseConfig.js";
 
 import {
@@ -9,7 +8,6 @@ import {
   signOut
 } from "https://www.gstatic.com/firebasejs/13.1.0/firebase-auth.js";
 
-// Mostrar mensagens nos formulários
 function mostrarMensagem(id, texto) {
   const elemento = document.getElementById(id);
 
@@ -18,7 +16,6 @@ function mostrarMensagem(id, texto) {
   }
 }
 
-// CADASTRO
 const cadastro = document.getElementById("register-form");
 
 if (cadastro) {
@@ -46,7 +43,7 @@ if (cadastro) {
         displayName: nome
       });
 
-      window.location.href = "Perfil.html";
+      window.location.href = "../verdequest/index.html";
     } catch (erro) {
       console.error(erro);
       mostrarMensagem(
@@ -57,7 +54,7 @@ if (cadastro) {
   });
 }
 
-// LOGIN
+
 const login = document.getElementById("login-form");
 
 if (login) {
@@ -66,21 +63,28 @@ if (login) {
 
     const email = document.getElementById("login-email").value.trim();
     const senha = document.getElementById("login-password").value;
+    const botao = login.querySelector('button[type="submit"]');
 
     try {
+      if (botao) botao.disabled = true;
+
       await signInWithEmailAndPassword(auth, email, senha);
-      window.location.href = "Perfil.html";
+
+      window.location.href = "../verdequest/index.html";
     } catch (erro) {
       console.error(erro);
+
       mostrarMensagem(
         "login-message",
         "Não foi possível entrar. Confira seu email e senha."
       );
+    } finally {
+      if (botao) botao.disabled = false;
     }
   });
 }
 
-// PROTEGER A PÁGINA DE PERFIL
+
 if (window.location.pathname.toLowerCase().endsWith("/perfil.html")) {
   onAuthStateChanged(auth, (usuario) => {
     if (!usuario) {
@@ -101,7 +105,6 @@ if (window.location.pathname.toLowerCase().endsWith("/perfil.html")) {
   });
 }
 
-// SAIR DA CONTA
 const sair = document.getElementById("logout-button");
 
 if (sair) {

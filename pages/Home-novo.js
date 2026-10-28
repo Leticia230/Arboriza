@@ -1,5 +1,3 @@
-// Carrossel do hero: cada ícone é uma pergunta/motivo.
-// Troca o fundo, o cartão (ícone + pergunta + texto) e avança sozinho.
 (function () {
     const hero = document.querySelector('.hero');
     if (!hero) return;
@@ -14,7 +12,7 @@
     const question = info.querySelector('.hero-info-question');
     const text = info.querySelector('.hero-info-text');
 
-    const DURACAO = 7000; // 7 segundos por pergunta (igual ao --slide-duration do CSS)
+    const DURACAO = 7000; 
     const reduzirMovimento = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
     let atual = -1;
@@ -38,10 +36,8 @@
         const mudou = novo !== atual;
         atual = novo;
 
-        // Fundo
         slides.forEach((slide, i) => slide.classList.toggle('active', i === atual));
 
-        // Menu: remove, força reflow e adiciona de novo para reiniciar a barrinha
         tabs.forEach((tab, i) => {
             tab.classList.remove('active');
             tab.setAttribute('aria-pressed', i === atual ? 'true' : 'false');
@@ -49,12 +45,11 @@
         void hero.offsetWidth;
         tabs[atual].classList.add('active');
 
-        // Cartão com um fade rápido
         if (mudou) {
             const alvo = atual;
             info.classList.add('trocando');
             setTimeout(() => {
-                if (alvo !== atual) return; // o usuário já clicou em outro
+                if (alvo !== atual) return; 
                 preencherCartao(alvo);
                 info.classList.remove('trocando');
             }, 200);
@@ -79,7 +74,7 @@
     function retomar() {
         pausado = false;
         hero.classList.remove('paused');
-        mostrar(atual); // reinicia a barrinha para ficar alinhada ao timer
+        mostrar(atual); 
         agendar();
     }
 
@@ -90,7 +85,6 @@
         });
     });
 
-    // Pausa quando o mouse está sobre o menu ou o cartão (não se aplica ao toque)
     [info, hero.querySelector('.benefits-wrapper')].forEach(area => {
         if (!area) return;
         area.addEventListener('pointerenter', e => {

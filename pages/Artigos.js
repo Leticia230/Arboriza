@@ -1,4 +1,3 @@
-
 document.addEventListener('DOMContentLoaded', () => {
     const form = document.getElementById('form-pesquisa');
     const campoPesquisa = document.getElementById('campo-pesquisa');
@@ -19,10 +18,6 @@ document.addEventListener('DOMContentLoaded', () => {
         return;
     }
 
-    /*
-     * Artigos de fontes reais.
-     * As datas indicam o ano ou a data de publicação informada pela fonte.
-     */
     const artigos = [
         {
             titulo: 'Vegetação em áreas urbanas: benefícios e custos associados',
@@ -245,6 +240,5 @@ document.addEventListener('DOMContentLoaded', () => {
         campoPesquisa.focus();
     });
 
-    // Exibe a busca inicial ao abrir a página.
     pesquisar();
 });

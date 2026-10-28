@@ -1,333 +1,682 @@
-
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="theme-color" content="#edf3e9">
-  <title>VerdeQuest — Meu jardim vivo</title>
-  <link rel="stylesheet" href="verdequest.css">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#203d2b">
+  <meta name="description" content="Descubra plantas, cultive seu jardim, complete missões e planeje seu espaço verde com o VerdeQuest.">
+  <title>VerdeQuest — Cultive novas descobertas</title>
+  <link rel="preconnect" href="https://images.unsplash.com">
+  <link rel="stylesheet" href="./verdequest.css">
 </head>
 
-<body>
-  <header class="topbar">
-    <a class="brand" href="#" aria-label="VerdeQuest, início">
-      <span class="brand-icon" aria-hidden="true">🌿</span>
-      <span>
-        <strong>VerdeQuest</strong>
-        <small>Um mundo que cresce com você</small>
-      </span>
-    </a>
-
-    <div class="topbar-actions">
-      <div class="points-display">
-        <span aria-hidden="true">✦</span>
-        <span id="points">0</span>
-        <small>pontos verdes</small>
-      </div>
-      <button id="resetGame" class="button button-quiet" type="button">
-        Reiniciar jogo
-      </button>
-    </div>
+<body class="verdequest-page">
+  <header class="vq-header">
+    <a class="vq-brand" href="./index.html" aria-label="VerdeQuest, início">VerdeQuest<span>.</span></a>
+    <nav class="vq-nav" aria-label="Navegação principal">
+      <a href="#catalogo">Plantas</a>
+      <a href="#missoes">Missões</a>
+      <a href="#meu-jardim">Meu jardim</a>
+      <a href="#simulador">Orçamento</a>
+    </nav>
+    <a class="vq-account" href="../pages/Perfil.html" id="vqAccountLink">Minha conta</a>
+    <button class="vq-menu-toggle" id="menuToggle" type="button" aria-label="Abrir menu" aria-expanded="false">Menu</button>
   </header>
 
-  <main class="app-main">
-    <section class="welcome-panel" id="welcomePanel">
-      <div>
-        <span class="eyebrow">SEU CANTINHO, SUA HISTÓRIA</span>
-        <h1>Faça seu mundo florescer.</h1>
-        <p>
-          Conheça plantas, cuide das suas companheiras e transforme
-          seu espaço em um pequeno refúgio verde.
-        </p>
+  <main>
+    <section class="vq-hero">
+      <div class="vq-hero-copy">
+        <p class="vq-eyebrow">UM MUNDO QUE CRESCE COM VOCÊ</p>
+        <h1>Mais verde.<br>Mais vida.<br><em>Mais descobertas.</em></h1>
+        <p class="vq-hero-description">Encontre plantas que combinam com seu espaço, aprenda a cuidar delas e transforme pequenos cantos em lugares cheios de vida.</p>
+        <div class="vq-hero-actions">
+          <a class="vq-button vq-button-light" href="#catalogo">Descobrir plantas</a>
+          <a class="vq-link-light" href="#meu-jardim">Conhecer meu jardim</a>
+        </div>
+        <div class="vq-hero-stats">
+          <div><strong id="vqPlantCount">0</strong><span>plantas no jardim</span></div>
+          <div><strong id="vqMissionCount">0/0</strong><span>missões concluídas</span></div>
+          <div><strong id="vqPoints">0</strong><span>sementes conquistadas</span></div>
+        </div>
+      </div>
+      <div class="vq-hero-image" role="img" aria-label="Jardim tropical com folhagens exuberantes">
+        <div class="vq-image-caption"><strong>A beleza está em cultivar.</strong></div>
       </div>
     </section>
 
-    <section class="setup-panel" aria-labelledby="setupTitle">
-      <details>
-        <summary id="setupTitle">Personalizar meu ambiente</summary>
-
-        <div class="setup-fields">
-          <label>
-            Ambiente
-            <select id="environment">
-              <option value="sala">Sala</option>
-              <option value="varanda">Varanda</option>
-              <option value="quintal">Quintal</option>
-              <option value="patio">Pátio</option>
-            </select>
-          </label>
-
-          <label>
-            Luz disponível
-            <select id="sunlight">
-              <option value="baixa">Pouca luz</option>
-              <option value="indireta" selected>Luz indireta</option>
-              <option value="alta">Luz intensa</option>
-            </select>
-          </label>
-
-          <label>
-            Ventilação
-            <select id="ventilation">
-              <option value="baixa">Baixa</option>
-              <option value="media" selected>Média</option>
-              <option value="alta">Alta</option>
-            </select>
-          </label>
-
-          <label>
-            Objetivo
-            <select id="goal">
-              <option value="facil">Começar com facilidade</option>
-              <option value="umidade">Explorar a umidade</option>
-              <option value="sombra">Plantas de sombra</option>
-              <option value="biodiversidade">Biodiversidade</option>
-            </select>
-          </label>
+    <section class="vq-section vq-explore" id="catalogo">
+      <div class="vq-section-heading">
+        <div>
+          <p class="vq-eyebrow vq-eyebrow-dark">SEU HERBÁRIO PARTICULAR</p>
+          <h2>Encontre sua nova <em>companheira.</em></h2>
+          <p>De espécies resistentes a folhagens exuberantes, descubra qual combina com sua rotina.</p>
         </div>
+      </div>
 
-        <button id="saveSetup" class="button button-primary" type="button">
-          Salvar ambiente
-        </button>
-        <p id="setupFeedback" role="status"></p>
-      </details>
+      <div class="vq-catalog-tools">
+        <label class="vq-search">
+          <span aria-hidden="true">⌕</span>
+          <input id="plantSearch" type="search" placeholder="Buscar nome ou espécie..." aria-label="Buscar plantas">
+        </label>
+        <div class="vq-filter-group" aria-label="Filtros de plantas">
+          <button class="vq-filter active" type="button" data-plant-filter="todas">Todas</button>
+          <button class="vq-filter" type="button" data-plant-filter="facil">Fáceis de cuidar</button>
+          <button class="vq-filter" type="button" data-plant-filter="pet">Atenção aos pets</button>
+        </div>
+      </div>
+
+      <div id="plantCatalog" class="vq-plant-grid" aria-live="polite">
+        <p class="vq-loading">Preparando seu herbário…</p>
+      </div>
+      <p class="vq-footnote">Antes de escolher uma espécie, confirme se ela é segura para os animais que vivem na sua casa.</p>
     </section>
 
-    <div class="quest-layout">
-      <aside class="side-menu" aria-label="Menu do VerdeQuest">
-        <div class="side-menu-heading">
-          <span class="eyebrow">SEU ESPAÇO</span>
-          <h2>Meu jardim</h2>
+    <section class="vq-missions" id="missoes">
+      <div class="vq-mission-intro">
+        <p class="vq-eyebrow">CADA GESTO FAZ DIFERENÇA</p>
+        <h2>Pequenos passos.<br><em>Grandes raízes.</em></h2>
+        <p>Explore, plante e cuide. Cada descoberta ajuda você a avançar na sua jornada botânica.</p>
+        <div class="vq-progress-card">
+          <div class="vq-progress-top">
+            <span>Seu progresso</span>
+            <strong id="vqProgressLabel">0% concluído</strong>
+          </div>
+          <div class="vq-progress-track"><span id="vqProgressBar"></span></div>
+          <p id="vqProgressHint">Sua primeira descoberta está esperando.</p>
         </div>
+      </div>
+      <div id="vqMissionList" class="vq-mission-list">
+        <p class="vq-loading">Preparando suas missões…</p>
+      </div>
+    </section>
 
-        <button class="menu-button is-active" type="button"
-                data-open-panel="roomPanel">
-          <span aria-hidden="true">🏡</span>
-          <span><strong>Meu cômodo</strong><small>Organize seu espaço</small></span>
-        </button>
-
-        <button class="menu-button" type="button"
-                data-open-panel="catalogModal">
-          <span aria-hidden="true">🌱</span>
-          <span><strong>Plantas</strong><small>Conheça novas espécies</small></span>
-        </button>
-
-        <button class="menu-button" type="button"
-                data-open-panel="collectionModal">
-          <span aria-hidden="true">🪴</span>
-          <span><strong>Minhas plantas</strong><small>Sua coleção pessoal</small></span>
-        </button>
-
-        <button class="menu-button" type="button"
-                data-open-panel="missionModal">
-          <span aria-hidden="true">🧭</span>
-          <span><strong>Minhas missões</strong><small>Veja seus objetivos</small></span>
-        </button>
-
-        <button class="menu-button" type="button"
-                data-open-panel="labModal">
-          <span aria-hidden="true">🌡️</span>
-          <span><strong>Laboratório</strong><small>Explore o microclima</small></span>
-        </button>
-
-        <div class="side-menu-note">
-          <span aria-hidden="true">💚</span>
-          <p>Cada descoberta é um passo para um mundo mais verde.</p>
+    <section class="vq-section vq-garden-section" id="meu-jardim">
+      <div class="vq-section-heading">
+        <div>
+          <p class="vq-eyebrow vq-eyebrow-dark">UM ESPAÇO COM A SUA CARA</p>
+          <h2>Seu jardim, suas <em>escolhas.</em></h2>
+          <p>Guarde suas plantas favoritas e acompanhe a coleção que você está cultivando.</p>
         </div>
-      </aside>
+        <a class="vq-button vq-button-dark" href="#catalogo">Adicionar uma planta</a>
+      </div>
 
-      <section class="main-workspace">
-        <section class="room-panel" id="roomPanel"
-                 aria-labelledby="roomTitle">
-          <div class="section-heading">
+      <div class="vq-garden-layout">
+        <article class="vq-garden-feature">
+          <img src="https://images.unsplash.com/photo-1416879595882-3373a0480b5b?auto=format&fit=crop&w=1500&q=85"
+               alt="Pessoa cuidando de plantas em um jardim" loading="lazy" data-vq-image>
+          <div class="vq-garden-feature-copy">
+            <p class="vq-eyebrow">INSPIRAÇÃO PARA CULTIVAR</p>
+            <h3>Um cantinho verde muda o dia.</h3>
+            <p>Comece com o espaço que você tem. A natureza encontra seu caminho aos poucos.</p>
+            <a class="vq-button vq-button-light" href="#simulador">Planejar meu espaço</a>
+          </div>
+        </article>
+
+        <aside class="vq-garden-side">
+          <div class="vq-side-heading">
+            <p class="vq-eyebrow vq-eyebrow-dark">SUA COLEÇÃO</p>
+            <span id="vqGardenTotal">0 plantas</span>
+          </div>
+          <div id="gardenList" class="vq-garden-list">
+            <p class="vq-empty-mini">Sua coleção começa com uma escolha.</p>
+          </div>
+          <div class="vq-garden-tip">
+            <strong>Um lembrete gentil</strong>
+            <p>Observe a luminosidade e a umidade da terra antes de regar. Cada espécie tem seu próprio ritmo.</p>
+          </div>
+        </aside>
+      </div>
+    </section>
+
+    <section class="vq-studio-section" id="simulador">
+      <div class="vq-section-heading">
+        <div>
+          <p class="vq-eyebrow">PLANEJAMENTO SEM COMPLICAÇÃO</p>
+          <h2>Ideias bonitas, <em>custos possíveis.</em></h2>
+        </div>
+        <p>Monte uma estimativa com plantas, vasos, substrato e outros materiais. Você pode editar preços e quantidades conforme os valores da sua região.</p>
+      </div>
+      <div id="simulator" class="vq-simulator">
+        <p class="vq-loading">Abrindo o simulador…</p>
+      </div>
+    </section>
+
+    <section class="vq-section vq-care-section" id="cuidados">
+      <div class="vq-section-heading">
+        <div>
+          <p class="vq-eyebrow vq-eyebrow-dark">DIÁRIO DO JARDIM</p>
+          <h2>Cuidar também é <em>uma descoberta.</em></h2>
+          <p>Registre regas, podas e outros cuidados para lembrar da evolução das suas plantas.</p>
+        </div>
+      </div>
+
+      <div class="vq-care-layout">
+        <form id="careForm" class="vq-care-form">
+          <p class="vq-eyebrow vq-eyebrow-dark">NOVO REGISTRO</p>
+          <label for="carePlant">Qual planta recebeu cuidado?</label>
+          <select id="carePlant" required><option value="">Selecione uma planta</option></select>
+          <label for="careType">Que cuidado você fez?</label>
+          <select id="careType" required>
+            <option value="Rega">Rega</option>
+            <option value="Adubação">Adubação</option>
+            <option value="Poda">Poda</option>
+            <option value="Limpeza das folhas">Limpeza das folhas</option>
+            <option value="Troca de vaso">Troca de vaso</option>
+            <option value="Observação">Observação</option>
+          </select>
+          <label for="careDate">Data do cuidado</label>
+          <input id="careDate" type="date" required>
+          <button class="vq-button vq-button-dark vq-submit-care" type="submit">Salvar registro</button>
+          <p class="vq-form-note">Pequenos cuidados também merecem ser lembrados.</p>
+        </form>
+
+        <div class="vq-care-history-wrap">
+          <div class="vq-history-heading">
             <div>
-              <span class="eyebrow">SEU MUNDO EM 3D</span>
-              <h2 id="roomTitle">Meu cantinho verde</h2>
-              <p>Arraste suas plantas pelo cômodo para encontrar o lugar ideal.</p>
-            </div>
-            <span class="room-status" id="plantCount">0 plantas no cômodo</span>
-          </div>
-
-          <div class="garden garden-sala" id="garden">
-            <div class="sunlight-effect" aria-hidden="true"></div>
-            <div class="window" aria-hidden="true"></div>
-            <div class="wall-picture" aria-hidden="true"></div>
-            <div class="shelf" aria-hidden="true"></div>
-            <div class="floor" aria-hidden="true"></div>
-
-            <p class="garden-hint" id="gardenHint">
-              Seu espaço está esperando pela primeira planta.
-              Abra “Plantas” para começar.
-            </p>
-
-            <div id="placedPlants" aria-label="Plantas posicionadas no cômodo"></div>
-          </div>
-
-          <div class="room-toolbar">
-            <p id="selectionStatus" role="status">
-              Escolha uma planta para começar.
-            </p>
-            <button id="removeSelected" class="button button-quiet"
-                    type="button">
-              Retirar planta selecionada
-            </button>
-          </div>
-        </section>
-
-        <section class="conversation-panel" aria-labelledby="conversationTitle">
-          <div class="section-heading">
-            <div>
-              <span class="eyebrow">SEU DIÁRIO VERDE</span>
-              <h2 id="conversationTitle">Recados do jardim</h2>
+              <p class="vq-eyebrow vq-eyebrow-dark">SUA ROTINA VERDE</p>
+              <h3>Cuidados recentes</h3>
             </div>
           </div>
-          <div id="conversation" aria-live="polite">
-            <p>Suas companheiras verdes vão aparecer aqui para conversar com você.</p>
+          <div id="careHistory" class="vq-care-history">
+            <p class="vq-empty-mini">Seus registros aparecerão aqui.</p>
           </div>
-          <div id="conversationActions" class="conversation-actions"></div>
-        </section>
-      </section>
-    </div>
+        </div>
+      </div>
+    </section>
   </main>
 
-  <!-- Catálogo completo de plantas -->
-  <dialog id="catalogModal" class="plant-dialog">
-    <div class="overlay-header">
-      <div>
-        <span class="eyebrow">DESCUBRA NOVAS ESPÉCIES</span>
-        <h2>Plantas</h2>
-        <p>Conheça cada espécie antes de convidá-la para seu jardim.</p>
-      </div>
-      <button class="button button-quiet" type="button"
-              data-close-panel aria-label="Fechar catálogo">Fechar ✕</button>
-    </div>
-    <div id="plantList" class="plant-list"></div>
+  <footer class="vq-footer">
+    <a class="vq-brand vq-footer-brand" href="./index.html">VerdeQuest<span>.</span></a>
+    <p>Feito para cultivar curiosidade, um broto de cada vez.</p>
+    <a href="#catalogo">Voltar ao herbário</a>
+  </footer>
+
+  <dialog id="vqPlantDialog" class="vq-plant-dialog" aria-labelledby="vqDialogTitle">
+    <button type="button" class="vq-dialog-close" aria-label="Fechar detalhes">Fechar</button>
+    <div id="vqDialogContent"></div>
   </dialog>
+  <div id="vqToast" class="vq-toast" role="status" aria-live="polite"></div>
 
-  <!-- Coleção pessoal -->
-  <dialog id="collectionModal" class="plant-dialog">
-    <div class="overlay-header">
-      <div>
-        <span class="eyebrow">AS SUAS COMPANHEIRAS</span>
-        <h2>Minhas plantas</h2>
-        <p>Aqui ficam as espécies que você já aceitou. Posicione-as no cômodo.</p>
-      </div>
-      <button class="button button-quiet" type="button"
-              data-close-panel aria-label="Fechar coleção">Fechar ✕</button>
-    </div>
-    <div id="collectionList" class="plant-list"></div>
-    <p id="collectionEmpty" class="empty-state">
-      Sua coleção está esperando pela primeira companheira.
-      Visite o catálogo para conhecer as plantas.
-    </p>
-  </dialog>
+  <script type="module">
+    import { plants, missions } from "./plants.js";
 
-  <!-- Missões -->
-  <dialog id="missionModal" class="plant-dialog">
-    <div class="overlay-header">
-      <div>
-        <span class="eyebrow">PEQUENAS CONQUISTAS</span>
-        <h2>Minhas missões</h2>
-        <p>Complete objetivos, aprenda e conquiste pontos verdes.</p>
-      </div>
-      <button class="button button-quiet" type="button"
-              data-close-panel aria-label="Fechar missões">Fechar ✕</button>
-    </div>
-    <div id="missions" class="missions-list"></div>
-  </dialog>
+    const $ = (selector, root = document) => root.querySelector(selector);
+    const $$ = (selector, root = document) => [...root.querySelectorAll(selector)];
 
-  <!-- Laboratório -->
-  <dialog id="labModal" class="plant-dialog">
-    <div class="overlay-header">
-      <div>
-        <span class="eyebrow">OBSERVE E EXPERIMENTE</span>
-        <h2>Laboratório ambiental</h2>
-        <p>
-          Informe as condições do ambiente e explore uma estimativa educativa
-          com base nas plantas posicionadas no cômodo.
-        </p>
-      </div>
-      <button class="button button-quiet" type="button"
-              data-close-panel aria-label="Fechar laboratório">Fechar ✕</button>
-    </div>
+    const safe = value => String(value ?? "").replace(/[&<>"']/g, char => ({
+      "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;"
+    })[char]);
 
-    <div class="lab-panel">
-      <label for="temperature">
-        Temperatura natural estimada do ambiente
-        <strong><span id="tempValue">26</span> °C</strong>
-      </label>
-      <input id="temperature" type="range" min="15" max="40" value="26">
+    let filtroAtual = "todas";
+    let toastTimer;
+    let auth = null;
+    let gardenModule = null;
+    let careModule = null;
 
-      <label for="humidity">
-        Umidade natural estimada do ambiente
-        <strong><span id="humidityValue">50</span>%</strong>
-      </label>
-      <input id="humidity" type="range" min="20" max="90" value="50">
+    function normalizeName(value) {
+      return String(value || "")
+        .normalize("NFD")
+        .replace(/[\u0300-\u036f]/g, "")
+        .trim()
+        .toLocaleLowerCase("pt-BR")
+        .replace(/[_\s]+/g, "-")
+        .replace(/[^a-z0-9-]/g, "");
+    }
 
-      <div id="labResults" aria-live="polite"></div>
-      <p class="lab-disclaimer">
-        As variações apresentadas são simulações educativas do jogo,
-        não medições reais nem previsões de mudança de temperatura ou umidade.
-      </p>
-    </div>
-  </dialog>
+    const defaultImages = {
+      jiboia: "https://images.unsplash.com/photo-1614594975525-e45190c55d0b?auto=format&fit=crop&w=1000&q=85",
+      espada: "https://images.unsplash.com/photo-1593482892290-f54927ae2b7b?auto=format&fit=crop&w=1000&q=85",
+      "espada-de-sao-jorge": "https://images.unsplash.com/photo-1593482892290-f54927ae2b7b?auto=format&fit=crop&w=1000&q=85",
+      zamioculca: "https://images.unsplash.com/photo-1632207691143-643e2d3f9a10?auto=format&fit=crop&w=1000&q=85",
+      clorofito: "https://images.unsplash.com/photo-1572688484438-313a6e50c1e8?auto=format&fit=crop&w=1000&q=85",
+      peperomia: "https://images.unsplash.com/photo-1593691509543-c55fb32e5cee?auto=format&fit=crop&w=1000&q=85",
+      samambaia: "https://images.unsplash.com/photo-1597055181300-a8b4be5e6f9a?auto=format&fit=crop&w=1000&q=85",
+      lavanda: "https://images.unsplash.com/photo-1499002238440-d264edd596ec?auto=format&fit=crop&w=1000&q=85",
+      manjericao: "https://images.unsplash.com/photo-1618375569909-3c8616cf7733?auto=format&fit=crop&w=1000&q=85",
+      maranta: "https://images.unsplash.com/photo-1598880940080-ff9a29891b85?auto=format&fit=crop&w=1000&q=85",
+      aloe: "https://images.unsplash.com/photo-1509423350716-97f9360b4e09?auto=format&fit=crop&w=1000&q=85",
+      babosa: "https://images.unsplash.com/photo-1509423350716-97f9360b4e09?auto=format&fit=crop&w=1000&q=85"
+    };
 
-  <!-- Ficha detalhada da planta -->
-  <dialog id="plantDialog" class="plant-dialog plant-detail-dialog">
-    <div id="dialogContent"></div>
-    <div class="dialog-actions">
-      <button id="closeDialog" class="button button-quiet" type="button">
-        Voltar
-      </button>
-      <button id="acceptPlant" class="button button-primary" type="button">
-        Convidar para minha coleção
-      </button>
-    </div>
-  </dialog>
+    const fallbackImage = "https://images.unsplash.com/photo-1485955900006-10f4d324d411?auto=format&fit=crop&w=1000&q=85";
 
-  <script type="module" src="room3d.js"></script>
-  <script type="module" src="fern3d.js"></script>
-  <script type="module" src="plants3d.js"></script>
-  <script type="module" src="game.js"></script>
+    function imageFor(plant) {
+      const ownImage = plant?.image || plant?.imagem || plant?.photo || plant?.foto;
+      if (typeof ownImage === "string" && /^https?:\/\//i.test(ownImage)) return ownImage;
+      return defaultImages[normalizeName(plant?.id || plant?.name || plant?.nome)] || fallbackImage;
+    }
 
-  <script>
-    // Abre e fecha as janelas da interface.
-    // O jogo continua responsável pelos dados e pelo salvamento.
-    document.querySelectorAll("[data-open-panel]").forEach((button) => {
-      button.addEventListener("click", () => {
-        const id = button.dataset.openPanel;
-        const panel = document.getElementById(id);
-        if (!panel) return;
-
-        document.querySelectorAll(".menu-button").forEach((item) => {
-          item.classList.toggle("is-active", item === button);
+    function attachImageFallbacks(container) {
+      if (!container) return;
+      container.querySelectorAll("img[data-vq-image]").forEach(img => {
+        if (img.dataset.vqFallbackAttached === "true") return;
+        img.dataset.vqFallbackAttached = "true";
+        img.addEventListener("error", () => {
+          if (img.dataset.vqFallbackTried !== "true" && img.src !== fallbackImage) {
+            img.dataset.vqFallbackTried = "true";
+            img.src = fallbackImage;
+          } else {
+            img.removeAttribute("src");
+            img.alt = `${img.alt || "Imagem"} — imagem indisponível`;
+            img.classList.add("vq-image-unavailable");
+          }
         });
+      });
+    }
 
-        if (id === "roomPanel") {
-          document.querySelectorAll("dialog[open]").forEach((dialog) => {
-            dialog.close();
-          });
+    function currentUid() {
+      return auth?.currentUser?.uid || "visitante";
+    }
+
+    function storageKey(key) {
+      return `verdequest_${key}_${currentUid()}`;
+    }
+
+    function readArray(key) {
+      try {
+        const value = JSON.parse(localStorage.getItem(storageKey(key)) || "[]");
+        return Array.isArray(value) ? value : [];
+      } catch {
+        return [];
+      }
+    }
+
+    function saveArray(key, value) {
+      try {
+        localStorage.setItem(storageKey(key), JSON.stringify(value));
+      } catch (error) {
+        console.warn("Não foi possível salvar os dados:", error);
+      }
+    }
+
+    function getGarden() {
+      try {
+        const value = JSON.parse(localStorage.getItem(storageKey("jardim")) || "[]");
+        return Array.isArray(value) ? value : [];
+      } catch {
+        return [];
+      }
+    }
+
+    function toast(message) {
+      const node = $("#vqToast");
+      if (!node) return;
+      node.textContent = message;
+      node.classList.add("show");
+      clearTimeout(toastTimer);
+      toastTimer = setTimeout(() => node.classList.remove("show"), 3500);
+    }
+
+    function plantById(id) {
+      return plants.find(plant => String(plant.id) === String(id));
+    }
+
+    function plantLight(plant) {
+      return Array.isArray(plant.light) ? plant.light.join(", ") : plant.light || "indireta";
+    }
+
+    function renderCatalog() {
+      const catalog = $("#plantCatalog");
+      if (!Array.isArray(plants)) {
+        catalog.innerHTML = '<p class="vq-no-results">O arquivo plants.js não forneceu uma lista válida.</p>';
+        return;
+      }
+
+      const query = ($("#plantSearch").value || "").trim().toLocaleLowerCase("pt-BR");
+      const gardenIds = new Set(getGarden().map(item => String(item.id)));
+
+      const list = plants.filter(plant => {
+        const text = [
+          plant.name, plant.nome, plant.scientific, plant.tagline,
+          plant.intro, plant.care, plant.habitat, plant.personality
+        ].filter(Boolean).join(" ").toLocaleLowerCase("pt-BR");
+
+        const easy = /fácil|facil|baixa manutenção|baixa manutencao|iniciante|resistente/i
+          .test([plant.care, plant.personality, plant.intro, plant.tagline].filter(Boolean).join(" "));
+
+        const pet = /tóxic|toxic|não é segura|nao e segura|irrit/i.test(String(plant.toxicity || ""));
+
+        return text.includes(query)
+          && (filtroAtual !== "facil" || easy)
+          && (filtroAtual !== "pet" || pet);
+      });
+
+      catalog.innerHTML = list.length ? list.map((plant, index) => {
+        const id = safe(plant.id);
+        const name = safe(plant.name || plant.nome || plant.id);
+        const added = gardenIds.has(String(plant.id));
+
+        return `
+          <article class="vq-plant-card">
+            <button class="vq-plant-photo" type="button" data-details="${id}" aria-label="Ver detalhes de ${name}">
+              <img src="${safe(imageFor(plant))}" alt="${name}" loading="lazy" data-vq-image>
+              <span class="vq-photo-number">${String(index + 1).padStart(2, "0")}</span>
+            </button>
+            <div class="vq-plant-card-body">
+              <p class="vq-scientific">${safe(plant.scientific || "Espécie botânica")}</p>
+              <h3>${name}</h3>
+              <p class="vq-plant-tagline">${safe(plant.tagline || plant.intro || "Uma nova companheira para seu espaço.")}</p>
+              <div class="vq-plant-facts">
+                <span>Luz: ${safe(plantLight(plant))}</span>
+                <span>Rega: ${safe(plant.water || "moderada")}</span>
+              </div>
+              <div class="vq-card-actions">
+                <button class="vq-details-button" type="button" data-details="${id}">Conhecer planta</button>
+                <button class="vq-add-button" type="button" data-add-plant="${id}" ${added ? "disabled" : ""}>
+                  ${added ? "Adicionada" : "Adicionar"}
+                </button>
+              </div>
+            </div>
+          </article>`;
+      }).join("") : `
+        <div class="vq-no-results">
+          <h3>Nenhuma planta encontrada</h3>
+          <p>Experimente outro termo ou filtro.</p>
+        </div>`;
+
+      attachImageFallbacks(catalog);
+    }
+
+    function showPlantDetails(id) {
+      const plant = plantById(id);
+      if (!plant) return;
+
+      const added = getGarden().some(item => String(item.id) === String(plant.id));
+      $("#vqDialogContent").innerHTML = `
+        <img class="vq-dialog-photo" src="${safe(imageFor(plant))}" alt="${safe(plant.name)}" data-vq-image>
+        <div class="vq-dialog-body">
+          <p class="vq-eyebrow vq-eyebrow-dark">FICHA BOTÂNICA</p>
+          <h2 id="vqDialogTitle">${safe(plant.name)}</h2>
+          <p class="vq-scientific">${safe(plant.scientific || "")}</p>
+          <p>${safe(plant.intro || plant.tagline || "Descubra como cultivar esta espécie.")}</p>
+          <div class="vq-detail-grid">
+            <div><strong>Iluminação</strong><p>${safe(plantLight(plant))}</p></div>
+            <div><strong>Rega</strong><p>${safe(plant.water || "Confira a umidade do substrato.")}</p></div>
+            <div><strong>Umidade</strong><p>${safe(plant.humidity || "Observe o ambiente.")}</p></div>
+            <div><strong>Temperatura</strong><p>${safe(plant.temperature || "Evite mudanças bruscas.")}</p></div>
+            <div><strong>Cuidados</strong><p>${safe(plant.care || "Acompanhe a resposta da planta.")}</p></div>
+            <div><strong>Atenção aos pets</strong><p>${safe(plant.toxicity || "Confirme a segurança para animais.")}</p></div>
+          </div>
+          <button class="vq-button vq-button-dark vq-dialog-add" data-add-plant="${safe(plant.id)}" ${added ? "disabled" : ""}>
+            ${added ? "Já está no jardim" : "Adicionar ao meu jardim"}
+          </button>
+        </div>`;
+
+      attachImageFallbacks($("#vqDialogContent"));
+      const dialog = $("#vqPlantDialog");
+      if (!dialog.open) dialog.showModal();
+
+      const discoveries = new Set(readArray("descobertas").map(String));
+      discoveries.add(String(plant.id));
+      saveArray("descobertas", [...discoveries]);
+      updateMissions();
+    }
+
+    function getDoneMissions() {
+      return new Set(readArray("missoes").map(String));
+    }
+
+    function getPoints() {
+      const value = Number(localStorage.getItem(storageKey("pontos")) || 0);
+      return Number.isFinite(value) ? value : 0;
+    }
+
+    function renderMissions() {
+      const done = getDoneMissions();
+      const total = missions.length;
+      const completed = missions.filter(m => done.has(String(m.id))).length;
+
+      $("#vqMissionCount").textContent = `${completed}/${total}`;
+      $("#vqPoints").textContent = getPoints();
+      $("#vqProgressLabel").textContent = `${total ? Math.round(completed / total * 100) : 0}% concluído`;
+      $("#vqProgressBar").style.width = `${total ? completed / total * 100 : 0}%`;
+      $("#vqProgressHint").textContent = completed === total && total
+        ? "Você concluiu todas as missões. Que jornada bonita!"
+        : `Faltam ${total - completed} missão(ões) para completar a jornada.`;
+
+      $("#vqMissionList").innerHTML = missions.map((mission, index) => {
+        const complete = done.has(String(mission.id));
+        return `
+          <article class="vq-mission ${complete ? "is-complete" : ""}">
+            <span class="vq-mission-number">${String(index + 1).padStart(2, "0")}</span>
+            <div>
+              <p class="vq-eyebrow vq-eyebrow-dark">${complete ? "CONCLUÍDA" : `MISSÃO ${index + 1}`}</p>
+              <h3>${safe(mission.title)}</h3>
+              <p>${safe(mission.description)}</p>
+              <small>${complete ? "Recompensa recebida" : `Recompensa: ${Number(mission.reward || 0)} sementes`}</small>
+            </div>
+          </article>`;
+      }).join("");
+    }
+
+    function updateMissions(action = "") {
+      const done = getDoneMissions();
+      const garden = getGarden();
+      const discovered = new Set(readArray("descobertas").map(String));
+      let points = getPoints();
+
+      const complete = id => {
+        const mission = missions.find(item => String(item.id) === String(id));
+        if (!mission || done.has(String(id))) return;
+        done.add(String(id));
+        points += Math.max(0, Number(mission.reward || 0));
+        toast(`Missão concluída: ${mission.title}`);
+      };
+
+      if (garden.length >= 1) {
+        complete("first-plant");
+        complete("garden-starter");
+      }
+      if (discovered.size >= 3) complete("plant-explorer");
+      if (garden.length >= 3) complete("team-garden");
+      if (action === "setup") complete("space-planner");
+      if (action === "lab") complete("microclimate");
+
+      saveArray("missoes", [...done]);
+      try {
+        localStorage.setItem(storageKey("pontos"), String(points));
+      } catch (error) {
+        console.warn("Não foi possível salvar os pontos:", error);
+      }
+      renderMissions();
+      updateStats();
+    }
+
+    function updateStats() {
+      const count = getGarden().length;
+      $("#vqPlantCount").textContent = count;
+      $("#vqGardenTotal").textContent = `${count} ${count === 1 ? "planta" : "plantas"}`;
+      $("#vqPoints").textContent = getPoints();
+    }
+
+    function renderGardenList() {
+      const garden = getGarden();
+      const list = $("#gardenList");
+
+      list.innerHTML = garden.length ? garden.map(item => {
+        const plant = plantById(item.id);
+        const name = item.nome || plant?.name || plant?.nome || "Planta";
+        return `
+          <article class="vq-garden-item">
+            <img src="${safe(imageFor(plant || { name }))}" alt="${safe(name)}" loading="lazy" data-vq-image>
+            <div>
+              <strong>${safe(name)}</strong>
+              <small>${safe(plant?.scientific || "Sua companheira verde")}</small>
+            </div>
+            <button type="button" data-remover-planta="${safe(item.id)}" aria-label="Remover ${safe(name)}">Remover</button>
+          </article>`;
+      }).join("") : '<p class="vq-empty-mini">Sua coleção começa com uma escolha.</p>';
+
+      attachImageFallbacks(list);
+    }
+
+    function syncGarden() {
+      renderCatalog();
+      renderGardenList();
+      updateMissions();
+      try {
+        careModule?.atualizarPlantasCuidados?.();
+      } catch (error) {
+        console.error("Erro ao atualizar plantas dos cuidados:", error);
+      }
+    }
+
+    $("#plantSearch").addEventListener("input", renderCatalog);
+
+    $$(".vq-filter").forEach(button => {
+      button.addEventListener("click", () => {
+        filtroAtual = button.dataset.plantFilter;
+        $$(".vq-filter").forEach(item => item.classList.toggle("active", item === button));
+        renderCatalog();
+      });
+    });
+
+    document.addEventListener("click", event => {
+      const detail = event.target.closest("[data-details]");
+      if (detail) showPlantDetails(detail.dataset.details);
+
+      const add = event.target.closest("[data-add-plant]");
+      if (add) {
+        const plant = plantById(add.dataset.addPlant);
+        if (!plant) {
+          toast("Essa planta não foi encontrada em plants.js.");
           return;
         }
 
-        if (panel instanceof HTMLDialogElement && !panel.open) {
-          panel.showModal();
+        if (!gardenModule?.adicionarPlanta) {
+          const garden = getGarden();
+          if (!garden.some(item => String(item.id) === String(plant.id))) {
+            garden.push({ id: plant.id, nome: plant.name });
+            saveArray("jardim", garden);
+            toast(`${plant.name} adicionada ao jardim.`);
+            syncGarden();
+          } else {
+            toast("Essa planta já está no jardim.");
+          }
+        } else {
+          try {
+            const result = gardenModule.adicionarPlanta(plant.id);
+            toast(result?.mensagem || (result?.sucesso ? "Planta adicionada." : "Não foi possível adicionar a planta."));
+            if (result?.sucesso) syncGarden();
+          } catch (error) {
+            console.error("Erro ao adicionar planta:", error);
+            toast("Não foi possível adicionar a planta. Confira garden.js.");
+          }
         }
-      });
+
+        const discoveries = new Set(readArray("descobertas").map(String));
+        discoveries.add(String(plant.id));
+        saveArray("descobertas", [...discoveries]);
+        if ($("#vqPlantDialog").open) $("#vqPlantDialog").close();
+      }
+
+      const remove = event.target.closest("[data-remover-planta]");
+      if (remove) {
+        try {
+          if (gardenModule?.removerPlanta) {
+            const result = gardenModule.removerPlanta(remove.dataset.removerPlanta);
+            toast(result?.mensagem || "Coleção atualizada.");
+            if (result?.sucesso) syncGarden();
+          } else {
+            const garden = getGarden().filter(item => String(item.id) !== String(remove.dataset.removerPlanta));
+            saveArray("jardim", garden);
+            toast("Planta removida do jardim.");
+            syncGarden();
+          }
+        } catch (error) {
+          console.error("Erro ao remover planta:", error);
+          toast("Não foi possível remover a planta.");
+        }
+      }
     });
 
-    document.querySelectorAll("[data-close-panel]").forEach((button) => {
-      button.addEventListener("click", () => {
-        button.closest("dialog")?.close();
-      });
+    $(".vq-dialog-close").addEventListener("click", () => $("#vqPlantDialog").close());
+
+    $("#vqPlantDialog").addEventListener("click", event => {
+      if (event.target === $("#vqPlantDialog")) $("#vqPlantDialog").close();
     });
 
-    document.querySelectorAll("dialog").forEach((dialog) => {
-      dialog.addEventListener("click", (event) => {
-        if (event.target === dialog) dialog.close();
-      });
+    const menuToggle = $("#menuToggle");
+    menuToggle.addEventListener("click", () => {
+      const open = menuToggle.getAttribute("aria-expanded") !== "true";
+      menuToggle.setAttribute("aria-expanded", String(open));
+      $(".vq-nav").classList.toggle("is-open", open);
     });
+
+    $$(".vq-nav a").forEach(link => link.addEventListener("click", () => {
+      $(".vq-nav").classList.remove("is-open");
+      menuToggle.setAttribute("aria-expanded", "false");
+    }));
+
+    const today = new Date();
+    $("#careDate").value = [
+      today.getFullYear(),
+      String(today.getMonth() + 1).padStart(2, "0"),
+      String(today.getDate()).padStart(2, "0")
+    ].join("-");
+
+    attachImageFallbacks(document);
+
+    try {
+      if (!Array.isArray(plants) || plants.length === 0) {
+        throw new Error("plants.js não contém plantas.");
+      }
+      if (!Array.isArray(missions)) {
+        throw new Error("missions não é uma lista válida.");
+      }
+      renderCatalog();
+      renderGardenList();
+      renderMissions();
+      updateStats();
+    } catch (error) {
+      console.error("Erro ao carregar plants.js:", error);
+      $("#plantCatalog").innerHTML = `
+        <div class="vq-no-results">
+          <h3>Não foi possível carregar as plantas</h3>
+          <p>Confira o erro no console do navegador e verifique o caminho de plants.js.</p>
+        </div>`;
+    }
+
+    try {
+      gardenModule = await import("./garden.js");
+      gardenModule.iniciarJardim?.(plants);
+      renderGardenList();
+      updateStats();
+    } catch (error) {
+      console.error("Não foi possível iniciar garden.js:", error);
+    }
+
+    try {
+      careModule = await import("./cuidados.js");
+      careModule.iniciarCuidados?.();
+      careModule.atualizarPlantasCuidados?.();
+    } catch (error) {
+      console.error("Não foi possível iniciar cuidados.js:", error);
+    }
+
+    try {
+      const simulatorModule = await import("./simulator.js");
+      simulatorModule.iniciarSimulador?.();
+    } catch (error) {
+      console.error("Não foi possível iniciar simulator.js:", error);
+      $("#simulator").innerHTML = '<p class="vq-empty-mini">O simulador não pôde ser carregado. Confira simulator.js.</p>';
+    }
+
+    try {
+      const firebaseModule = await import("../pages/firebaseConfig.js");
+      auth = firebaseModule.auth;
+
+      if (auth && typeof auth.onAuthStateChanged === "function") {
+        auth.onAuthStateChanged(() => {
+          renderCatalog();
+          renderGardenList();
+          renderMissions();
+          updateStats();
+        }, error => console.error("Erro de autenticação:", error));
+      }
+    } catch (error) {
+      console.error("Firebase não foi conectado:", error);
+    }
   </script>
 </body>
 </html>

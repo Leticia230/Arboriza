@@ -1,7 +1,24 @@
+const imageBase = "https://images.unsplash.com/";
+
+
+const plantImages = {
+  jiboia: "https://images.unsplash.com/photo-1614594975525-e45190c55d0b?auto=format&fit=crop&w=1000&q=85",
+  espada: "https://pergunteaoagronomo.com.br/wp-content/uploads/2021/10/AT-Snake-Plants-lead-Apartment-Therapy-scaled-1.webp",
+  zamioculca: "https://cdn.awsli.com.br/1000x1000/2782/2782459/produto/327852176/d_nq_np_2x_738469-mlb79951032994_102024-f-w5t1vkpo8d.webp",
+  clorofito: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTp-y9y3QkwVmyUN3j1y2IesdbYGvrIq-uVTy5PrRXQtg&s=10",
+  peperomia: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQtOehs7Z5qvIjC9nZlIsx1S9_246zonUlVfVsSOCqpvA&s=10",
+  samambaia: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcScCSywV-1gH-E2cDHtvIgpIxgIaXcssXF-24ZrsNrhYQ&s=10",
+  lavanda: "https://images.unsplash.com/photo-1499002238440-d264edd596ec?auto=format&fit=crop&w=1000&q=85",
+  manjericao: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT7BUslJr4bw2ZSu-sHEkDWLOCTUtXQHPYqJgllAntvMQ&s=10",
+  maranta: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQiv6s7JJdLwKC2HKrPdc8dYo1Uv3l3C4Lbma6bhhy2rg&s=10",
+  aloe: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTcMjYFNdzUJsYU1nAb9l6XLT57U8oanZg32qC7qo-iNA&s=10"
+};
+
 
 export const plants = [
   {
     id: "jiboia",
+    image: plantImages.jiboia,
     name: "Jiboia",
     scientific: "Epipremnum aureum",
     emoji: "🌿",
@@ -30,6 +47,7 @@ export const plants = [
   },
   {
     id: "espada",
+    image: plantImages.espada,
     name: "Espada-de-são-jorge",
     scientific: "Dracaena trifasciata",
     emoji: "🪴",
@@ -58,6 +76,7 @@ export const plants = [
   },
   {
     id: "zamioculca",
+    image: plantImages.zamioculca,
     name: "Zamioculca",
     scientific: "Zamioculcas zamiifolia",
     emoji: "🌱",
@@ -86,6 +105,7 @@ export const plants = [
   },
   {
     id: "clorofito",
+    image: plantImages.clorofito,
     name: "Clorofito",
     scientific: "Chlorophytum comosum",
     emoji: "🌾",
@@ -114,6 +134,7 @@ export const plants = [
   },
   {
     id: "peperomia",
+    image: plantImages.peperomia,
     name: "Peperômia",
     scientific: "Peperomia obtusifolia",
     emoji: "🍃",
@@ -142,6 +163,7 @@ export const plants = [
   },
   {
     id: "samambaia",
+    image: plantImages.samambaia,
     name: "Samambaia",
     scientific: "Nephrolepis exaltata",
     emoji: "🌿",
@@ -170,6 +192,7 @@ export const plants = [
   },
   {
     id: "lavanda",
+    image: plantImages.lavanda,
     name: "Lavanda",
     scientific: "Lavandula angustifolia",
     emoji: "🪻",
@@ -198,6 +221,7 @@ export const plants = [
   },
   {
     id: "manjericao",
+    image: plantImages.manjericao,
     name: "Manjericão",
     scientific: "Ocimum basilicum",
     emoji: "🌱",
@@ -226,6 +250,7 @@ export const plants = [
   },
   {
     id: "maranta",
+    image: plantImages.maranta,
     name: "Maranta",
     scientific: "Maranta leuconeura",
     emoji: "🌱",
@@ -254,6 +279,7 @@ export const plants = [
   },
   {
     id: "aloe",
+    image: plantImages.aloe,
     name: "Babosa",
     scientific: "Aloe vera",
     emoji: "🌵",

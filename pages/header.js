@@ -1,4 +1,3 @@
-
 class SiteHeader extends HTMLElement {
     connectedCallback() {
         this.innerHTML = `
@@ -31,44 +30,12 @@ class SiteHeader extends HTMLElement {
                         <a href="Login.html" class="login-button">
                             Entrar
                         </a>
-
-                        <a
-                            href="Login.html"
-                            class="profile-link"
-                            aria-label="Acessar minha conta"
-                            title="Acessar minha conta"
-                        >
-                            <svg
-                                class="profile-icon"
-                                viewBox="0 0 24 24"
-                                fill="none"
-                                aria-hidden="true"
-                            >
-                                <circle
-                                    cx="12"
-                                    cy="8"
-                                    r="4"
-                                    stroke="currentColor"
-                                    stroke-width="1.8"
-                                />
-
-                                <path
-                                    d="M4.5 21C4.5 16.9 7.5 14 12 14C16.5 14 19.5 16.9 19.5 21"
-                                    stroke="currentColor"
-                                    stroke-width="1.8"
-                                    stroke-linecap="round"
-                                />
-                            </svg>
-
-                            <span>Minha conta</span>
-                        </a>
                     </div>
 
                 </div>
             </header>
         `;
 
-        // Marca a página atual na navegação.
         const paginaAtual = (
             location.pathname.split('/').pop() || 'Home.html'
         ).toLowerCase();
