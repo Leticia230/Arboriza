@@ -21,9 +21,9 @@ class SiteHeader extends HTMLElement {
 
                     <nav class="main-navigation" aria-label="Navegação principal">
                         <a href="Home.html" class="nav-link">Início</a>
-                        <a href="artigos.html" class="nav-link">Artigos</a>
+                        <a href="Artigos.html" class="nav-link">Artigos</a>
                         <a href="Glossario.html" class="nav-link">Glossário</a>
-                        <a href="midia.html" class="nav-link">Mídia</a>
+                        <a href="Midia.html" class="nav-link">Mídia</a>
                     </nav>
 
                     <div class="header-actions">
