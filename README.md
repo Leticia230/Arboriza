@@ -36,4 +36,5 @@ O **Arboriza** reúne conteúdos relacionados à vegetação urbana, permitindo 
 
 🌐 **Acesse o site:** 
 
-https://leticia230.github.io/Arboriza/pages/Home.html
+https://leticia230.github.io/Arboriza
+
