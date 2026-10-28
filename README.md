@@ -22,6 +22,14 @@ O **Arboriza** reúne conteúdos relacionados à vegetação urbana, permitindo 
 
 ---
 
+## Integrantes
+
+- Letícia Pires de Almeida
+- Lucas de Jesus Gonçalves
+- Milena de Bastos Miranda
+- Rafael Guerra Lacerda Almeida
+- Thomás da Silva Marques Pereira
+
 ## 💻 Site
 
 🌐 **Acesse o site:** 
