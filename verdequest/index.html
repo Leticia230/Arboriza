@@ -425,11 +425,12 @@
       const done = getDoneMissions();
       const total = missions.length;
       const completed = missions.filter(m => done.has(String(m.id))).length;
+      const percent = total ? Math.round((completed / total) * 100) : 0;
 
       $("#vqMissionCount").textContent = `${completed}/${total}`;
       $("#vqPoints").textContent = getPoints();
-      $("#vqProgressLabel").textContent = `${total ? Math.round(completed / total * 100) : 0}% concluído`;
-      $("#vqProgressBar").style.width = `${total ? completed / total * 100 : 0}%`;
+      $("#vqProgressLabel").textContent = `${percent}% concluído`;
+      $("#vqProgressBar").style.width = `${percent}%`;
       $("#vqProgressHint").textContent = completed === total && total
         ? "Você concluiu todas as missões. Que jornada bonita!"
         : `Faltam ${total - completed} missão(ões) para completar a jornada.`;
