@@ -27,9 +27,9 @@ O Arboriza reúne conteúdos relacionados à vegetação urbana, permitindo que 
 
 ## 🛠️ Ferramentas Utilizadas
 As seguintes tecnologias e ferramentas foram utilizadas no desenvolvimento do projeto:
-- **HTML5, CSS3 e JavaScript (ES6+):** Estruturação, estilização responsiva e lógica de funcionamento das páginas.
+- **HTML, CSS e JavaScript:** Estruturação, estilização responsiva e lógica de funcionamento das páginas.
 - **Firebase Authentication:** Gestão de contas de utilizador, login e segurança.
-- **Git e GitHub / GitHub Pages:** Controlo de versões e alojamento/deploy do site.
+- **Git e GitHub / GitHub Pages:** Controlo de versões e alojamento do site.
 - **Visual Studio Code:** Editor de código-fonte.
 
 ---
