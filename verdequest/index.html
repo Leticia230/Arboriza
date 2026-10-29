@@ -269,7 +269,16 @@
     }
 
     function storageKey(key) {
-      return `verdequest_${key}_${currentUid()}`;
+      const uid = auth?.currentUser?.uid;
+      const visitorKey = `verdequest_${key}_visitante`;
+      if (uid) {
+        const userKey = `verdequest_${key}_${uid}`;
+        if (localStorage.getItem(visitorKey) && !localStorage.getItem(userKey)) {
+          localStorage.setItem(userKey, localStorage.getItem(visitorKey));
+        }
+        return userKey;
+      }
+      return visitorKey;
     }
 
     function readArray(key) {
