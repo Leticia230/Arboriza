@@ -1,172 +1,154 @@
-import {
-  obterCuidados,
-  salvarCuidados
-} from "./storage.js";
 
-import { obterJardim } from "./storage.js";
+const TIPOS_CUIDADO = {
+  rega: {
+    nome: "Rega",
+    descricao: "Verifique a umidade do substrato antes de regar."
+  },
+  adubacao: {
+    nome: "Adubação",
+    descricao: "Confira se a planta está no período adequado de adubação."
+  },
+  poda: {
+    nome: "Poda",
+    descricao: "Retire folhas secas ou partes danificadas quando necessário."
+  },
+  limpeza: {
+    nome: "Limpeza",
+    descricao: "Remova delicadamente a poeira das folhas."
+  }
+};
 
-function escaparHTML(valor) {
-  return String(valor ?? "").replace(/[&<>"']/g, caractere => ({
-    "&": "&amp;",
-    "<": "&lt;",
-    ">": "&gt;",
-    '"': "&quot;",
-    "'": "&#39;"
-  })[caractere]);
+function dataAtual() {
+  const agora = new Date();
+
+  const ano = agora.getFullYear();
+  const mes = String(agora.getMonth() + 1).padStart(2, "0");
+  const dia = String(agora.getDate()).padStart(2, "0");
+
+  return `${ano}-${mes}-${dia}`;
 }
 
-function formatarData(data) {
-  if (!data) return "Data não informada";
-
-  const partes = data.split("-");
-  if (partes.length !== 3) return data;
-
-  return `${partes[2]}/${partes[1]}/${partes[0]}`;
+function normalizarHistorico(historico) {
+  return Array.isArray(historico)
+    ? historico.filter(item =>
+        item &&
+        typeof item.tipo === "string" &&
+        typeof item.data === "string"
+      )
+    : [];
 }
 
-function preencherPlantas() {
-  const seletor = document.getElementById("carePlant");
-  if (!seletor) return;
-
-  const plantaSelecionada = seletor.value;
-  const jardim = obterJardim();
-
-  seletor.innerHTML = `
-    <option value="">Selecione uma planta</option>
-    ${jardim.map(planta => `
-      <option value="${escaparHTML(planta.id)}">
-        ${escaparHTML(planta.nome ?? "Planta")}
-      </option>
-    `).join("")}
-  `;
-
-  if (jardim.some(planta => String(planta.id) === plantaSelecionada)) {
-    seletor.value = plantaSelecionada;
-  }
+export function obterTiposCuidado() {
+  return Object.entries(TIPOS_CUIDADO).map(([id, cuidado]) => ({
+    id,
+    ...cuidado
+  }));
 }
 
-function renderizarHistorico() {
-  const container = document.getElementById("careHistory");
-  if (!container) return;
+export function obterOrientacaoCuidado(planta) {
+  if (!planta) return null;
 
-  const cuidados = obterCuidados();
-
-  if (cuidados.length === 0) {
-    container.innerHTML = `
-      <div class="empty-state">
-        <p>Nenhum cuidado registrado ainda.</p>
-        <p>Registre o primeiro cuidado das plantas do seu jardim.</p>
-      </div>
-    `;
-    return;
-  }
-
-  const cuidadosOrdenados = [...cuidados].sort((a, b) =>
-    String(b.data).localeCompare(String(a.data))
-  );
-
-  container.innerHTML = cuidadosOrdenados.map(cuidado => `
-    <article class="care-entry">
-      <div>
-        <h3>${escaparHTML(cuidado.plantaNome)}</h3>
-        <p>${escaparHTML(cuidado.tipo)}</p>
-      </div>
-      <time datetime="${escaparHTML(cuidado.data)}">
-        ${escaparHTML(formatarData(cuidado.data))}
-      </time>
-      <button
-        class="button button-outline"
-        type="button"
-        data-remover-cuidado="${escaparHTML(cuidado.id)}"
-      >
-        Excluir
-      </button>
-    </article>
-  `).join("");
+  return {
+    rega: planta.water || "Verifique a umidade do substrato antes de regar.",
+    adubacao: "A frequência depende da espécie, do substrato, da estação e do desenvolvimento da planta. Consulte uma orientação específica antes de adubar.",
+    poda: "Retire folhas secas, amareladas ou danificadas quando necessário.",
+    limpeza: "Limpe delicadamente as folhas com um pano macio quando houver acúmulo de poeira."
+  };
 }
 
-function registrarCuidado(evento) {
-  evento.preventDefault();
+export function obterHistoricoCuidados(planta) {
+  return normalizarHistorico(planta?.cuidados)
+    .sort((a, b) => {
+      const dataA = new Date(`${a.data}T${a.hora || "00:00:00"}`);
+      const dataB = new Date(`${b.data}T${b.hora || "00:00:00"}`);
 
-  const seletor = document.getElementById("carePlant");
-  const tipo = document.getElementById("careType");
-  const data = document.getElementById("careDate");
-
-  if (!seletor || !tipo || !data) return;
-
-  const jardim = obterJardim();
-  const planta = jardim.find(
-    item => String(item.id) === seletor.value
-  );
-
-  if (!planta) {
-    alert("Adicione uma planta ao seu jardim antes de registrar cuidados.");
-    return;
-  }
-
-  if (!data.value) {
-    alert("Selecione a data do cuidado.");
-    return;
-  }
-
-  const cuidados = obterCuidados();
-
-  cuidados.push({
-    id: `${Date.now()}-${Math.random().toString(36).slice(2, 8)}`,
-    plantaId: planta.id,
-    plantaNome: planta.nome ?? "Planta",
-    tipo: tipo.value,
-    data: data.value
-  });
-
-  if (!salvarCuidados(cuidados)) {
-    alert("Não foi possível salvar o cuidado. Tente novamente.");
-    return;
-  }
-
-  renderizarHistorico();
-
-  data.value = "";
-  tipo.value = "Rega";
-}
-
-function removerCuidado(id) {
-  const cuidados = obterCuidados().filter(
-    cuidado => String(cuidado.id) !== String(id)
-  );
-
-  if (!salvarCuidados(cuidados)) {
-    alert("Não foi possível excluir esse registro.");
-    return;
-  }
-
-  renderizarHistorico();
-}
-
-export function iniciarCuidados() {
-  const formulario = document.getElementById("careForm");
-  const historico = document.getElementById("careHistory");
-
-  if (formulario && !formulario.dataset.iniciado) {
-    formulario.addEventListener("submit", registrarCuidado);
-    formulario.dataset.iniciado = "true";
-  }
-
-  if (historico && !historico.dataset.iniciado) {
-    historico.addEventListener("click", evento => {
-      const botao = evento.target.closest("[data-remover-cuidado]");
-      if (!botao) return;
-
-      removerCuidado(botao.dataset.removerCuidado);
+      return dataB - dataA;
     });
+}
 
-    historico.dataset.iniciado = "true";
+export function obterCuidadosDoDia(planta) {
+  const hoje = dataAtual();
+
+  return obterHistoricoCuidados(planta)
+    .filter(item => item.data === hoje);
+}
+
+export function cuidadoRealizadoHoje(planta, tipo) {
+  return obterCuidadosDoDia(planta)
+    .some(item => item.tipo === tipo);
+}
+
+export function registrarCuidado(planta, tipo) {
+  if (!planta || !TIPOS_CUIDADO[tipo]) {
+    return {
+      sucesso: false,
+      mensagem: "Não foi possível registrar esse cuidado."
+    };
   }
 
-  preencherPlantas();
-  renderizarHistorico();
+  const historico = normalizarHistorico(planta.cuidados);
+  const hoje = dataAtual();
+
+  const jaRegistrado = historico.some(item =>
+    item.tipo === tipo && item.data === hoje
+  );
+
+  if (jaRegistrado) {
+    return {
+      sucesso: false,
+      mensagem: "Esse cuidado já foi registrado hoje."
+    };
+  }
+
+  const agora = new Date();
+
+  const novoRegistro = {
+    id: globalThis.crypto?.randomUUID?.() ||
+      `cuidado-${Date.now()}-${Math.random().toString(36).slice(2, 8)}`,
+    tipo,
+    nome: TIPOS_CUIDADO[tipo].nome,
+    data: hoje,
+    hora: agora.toLocaleTimeString("pt-BR", {
+      hour: "2-digit",
+      minute: "2-digit"
+    }),
+    registradoEm: agora.toISOString()
+  };
+
+  return {
+    sucesso: true,
+    mensagem: "Cuidado registrado!",
+    historico: [...historico, novoRegistro],
+    registro: novoRegistro
+  };
+}
+
+export function removerRegistroCuidado(planta, registroId) {
+  if (!planta || !registroId) return null;
+
+  return normalizarHistorico(planta.cuidados)
+    .filter(item => item.id !== registroId);
+}
+
+export function formatarDataCuidado(data) {
+  if (!data || !/^\d{4}-\d{2}-\d{2}$/.test(data)) {
+    return "Data não informada";
+  }
+
+  const [ano, mes, dia] = data.split("-");
+
+  return `${dia}/${mes}/${ano}`;
+}
+
+/*
+ * Compatibilidade com a inicialização anterior do index.html.
+ * O diário separado foi substituído pelo histórico individual
+ * de cada planta no jardim.
+ */
+export async function iniciarCuidados() {
+  return true;
 }
 
 export function atualizarPlantasCuidados() {
-  preencherPlantas();
+  return true;
 }

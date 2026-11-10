@@ -1,169 +1,160 @@
 import {
   obterJardim,
-  salvarJardim
+  salvarJardim as salvarJardimBanco
 } from "./storage.js";
 
-let catalogoAtual = [];
+let catalogo = [];
 
-function escaparHTML(valor) {
-  return String(valor ?? "").replace(/[&<>"']/g, caractere => ({
-    "&": "&amp;",
-    "<": "&lt;",
-    ">": "&gt;",
-    '"': "&quot;",
-    "'": "&#39;"
-  })[caractere]);
-}
+export async function iniciarJardim(plantas = []) {
+  catalogo = Array.isArray(plantas) ? plantas : [];
 
-function avisarJardimAtualizado() {
-  window.dispatchEvent(new Event("verdequest-jardim-atualizado"));
-}
-
-function encontrarPlanta(id) {
-  return catalogoAtual.find(
-    planta => String(planta.id) === String(id)
-  );
-}
-
-function renderizarJardim() {
-  const container = document.getElementById("gardenList");
-  if (!container) return;
-
-  const jardim = obterJardim();
-
-  if (jardim.length === 0) {
-    container.innerHTML = `
-      <div class="empty-state">
-        <p>Seu jardim está começando a florescer.</p>
-        <p>Explore o catálogo e adicione suas primeiras plantas!</p>
-        <a class="button button-primary" href="#catalogo">
-          Explorar plantas
-        </a>
-      </div>
-    `;
-    return;
+  try {
+    await obterJardim();
+    return true;
+  } catch (erro) {
+    console.error("Erro ao iniciar jardim:", erro);
+    return false;
   }
-
-  container.innerHTML = jardim.map(item => {
-    const planta = encontrarPlanta(item.id);
-    const nome = planta?.name ?? planta?.nome ?? item.nome ?? "Planta";
-    const imagem = planta?.image ?? planta?.imagem ?? item.imagem ?? "";
-
-    return `
-      <article class="garden-item">
-        ${imagem ? `
-          <img
-            src="${escaparHTML(imagem)}"
-            alt="${escaparHTML(nome)}"
-            loading="lazy"
-          >
-        ` : ""}
-
-        <div>
-          <h3>${escaparHTML(nome)}</h3>
-          <p>Faz parte do seu jardim pessoal.</p>
-        </div>
-
-        <button
-          class="button button-outline"
-          type="button"
-          data-remover-planta="${escaparHTML(item.id)}"
-          aria-label="Remover ${escaparHTML(nome)} do jardim"
-        >
-          Remover
-        </button>
-      </article>
-    `;
-  }).join("");
 }
 
-export function adicionarPlanta(id) {
-  const planta = encontrarPlanta(id);
+export async function obterPlantasJardim() {
+  try {
+    return await obterJardim();
+  } catch (erro) {
+    console.error("Erro ao carregar plantas do jardim:", erro);
+    return [];
+  }
+}
+
+export async function salvarJardim(plantas) {
+  return salvarJardimBanco(plantas);
+}
+
+export async function adicionarPlanta(id, comodo = "A definir") {
+  const planta = catalogo.find(
+    item => String(item.id) === String(id)
+  );
 
   if (!planta) {
     return {
       sucesso: false,
-      mensagem: "Não foi possível encontrar essa planta no catálogo."
+      mensagem: "Planta não encontrada."
     };
   }
 
-  const jardim = obterJardim();
+  try {
+    const jardim = await obterJardim();
 
-  if (jardim.some(item => String(item.id) === String(id))) {
-    return {
-      sucesso: false,
-      mensagem: "Essa planta já está no seu jardim."
-    };
-  }
+    const jaExiste = jardim.some(
+      item => String(item.id) === String(id)
+    );
 
-  const imagem = planta.image ?? planta.imagem ?? "";
+    if (jaExiste) {
+      return {
+        sucesso: false,
+        mensagem: "Essa planta já está no jardim."
+      };
+    }
 
-  jardim.push({
-    id: planta.id,
-    nome: planta.name ?? planta.nome ?? "Planta",
-    imagem
-  });
-
-  if (!salvarJardim(jardim)) {
-    return {
-      sucesso: false,
-      mensagem: "Não foi possível salvar. Verifique o navegador."
-    };
-  }
-
-  renderizarJardim();
-  avisarJardimAtualizado();
-
-  return {
-    sucesso: true,
-    mensagem: "Planta adicionada ao seu jardim!"
-  };
-}
-
-export function removerPlanta(id) {
-  const jardim = obterJardim().filter(
-    item => String(item.id) !== String(id)
-  );
-
-  if (!salvarJardim(jardim)) {
-    return {
-      sucesso: false,
-      mensagem: "Não foi possível salvar a alteração."
-    };
-  }
-
-  renderizarJardim();
-  avisarJardimAtualizado();
-
-  return {
-    sucesso: true,
-    mensagem: "Planta removida do seu jardim."
-  };
-}
-
-export function iniciarJardim(plantas) {
-  catalogoAtual = Array.isArray(plantas) ? plantas : [];
-
-  const container = document.getElementById("gardenList");
-  if (!container) return;
-
-  if (container.dataset.iniciado !== "true") {
-    container.addEventListener("click", evento => {
-      const botao = evento.target.closest("[data-remover-planta]");
-      if (!botao) return;
-
-      const resultado = removerPlanta(
-        botao.dataset.removerPlanta
-      );
-
-      if (!resultado.sucesso) {
-        console.error(resultado.mensagem);
-      }
+    jardim.push({
+      id: planta.id,
+      nome: planta.name || planta.nome || "Planta",
+      imagem: planta.image || planta.imagem || "",
+      comodo,
+      adicionadaEm: new Date().toISOString(),
+      cuidados: []
     });
 
-    container.dataset.iniciado = "true";
-  }
+    const salvo = await salvarJardimBanco(jardim);
 
-  renderizarJardim();
-  avisarJardimAtualizado();
+    if (!salvo) {
+      return {
+        sucesso: false,
+        mensagem: "Não foi possível salvar no banco de dados."
+      };
+    }
+
+    return {
+      sucesso: true,
+      mensagem: "Planta adicionada ao jardim."
+    };
+
+  } catch (erro) {
+    console.error("Erro ao adicionar planta:", erro);
+
+    return {
+      sucesso: false,
+      mensagem: "Ocorreu um erro ao adicionar a planta."
+    };
+  }
+}
+
+export async function atualizarComodo(id, comodo) {
+  try {
+    const jardim = await obterJardim();
+
+    const planta = jardim.find(
+      item => String(item.id) === String(id)
+    );
+
+    if (!planta) {
+      return {
+        sucesso: false,
+        mensagem: "Planta não encontrada."
+      };
+    }
+
+    planta.comodo = comodo;
+
+    const salvo = await salvarJardimBanco(jardim);
+
+    return salvo
+      ? { sucesso: true, mensagem: "Cômodo atualizado." }
+      : {
+          sucesso: false,
+          mensagem: "Não foi possível salvar o cômodo."
+        };
+
+  } catch (erro) {
+    console.error("Erro ao atualizar cômodo:", erro);
+
+    return {
+      sucesso: false,
+      mensagem: "Ocorreu um erro ao atualizar o cômodo."
+    };
+  }
+}
+
+export async function removerPlanta(id) {
+  try {
+    const jardim = await obterJardim();
+
+    const atualizado = jardim.filter(
+      item => String(item.id) !== String(id)
+    );
+
+    if (atualizado.length === jardim.length) {
+      return {
+        sucesso: false,
+        mensagem: "Planta não encontrada no jardim."
+      };
+    }
+
+    const salvo = await salvarJardimBanco(atualizado);
+
+    return salvo
+      ? { sucesso: true, mensagem: "Planta removida." }
+      : {
+          sucesso: false,
+          mensagem: "Não foi possível remover a planta."
+        };
+
+  } catch (erro) {
+    console.error("Erro ao remover planta:", erro);
+
+    return {
+      sucesso: false,
+      mensagem: "Ocorreu um erro ao remover a planta."
+    };
+  }
 }

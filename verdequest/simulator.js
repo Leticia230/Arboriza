@@ -1,3 +1,8 @@
+import {
+  obterDados,
+  salvarDados
+} from "./storage.js";
+
 const moedaBRL = valor =>
   new Intl.NumberFormat("pt-BR", {
     style: "currency",
@@ -14,8 +19,11 @@ const itensIniciais = [
 ];
 
 let itens = itensIniciais.map(item => ({ ...item }));
+let reservaPercentual = 10;
+let descontoPercentual = 0;
 let proximoId = 1;
 let inicializado = false;
+let salvamentoEmAndamento = Promise.resolve();
 
 function criarId() {
   return `personalizado-${proximoId++}`;
@@ -41,6 +49,68 @@ function campoNumero(valor, atributos = "") {
   return `<input type="number" min="0" step="0.01" value="${numeroValido(valor)}" ${atributos}>`;
 }
 
+async function salvarOrcamento() {
+  const dados = [{
+    itens,
+    reservaPercentual,
+    descontoPercentual
+  }];
+
+  salvamentoEmAndamento = salvamentoEmAndamento
+    .catch(() => {})
+    .then(() => salvarDados("orcamento", dados));
+
+  const salvou = await salvamentoEmAndamento;
+
+  if (!salvou) {
+    console.error("Não foi possível salvar o orçamento no Firestore.");
+  }
+
+  return salvou;
+}
+
+async function carregarOrcamento() {
+  try {
+    const dados = await obterDados("orcamento");
+
+    if (!dados.length) return;
+
+    const salvo = dados[0];
+
+    if (Array.isArray(salvo.itens)) {
+      itens = salvo.itens.map(item => ({
+        ...item,
+        quantidade: numeroValido(item.quantidade, 0, 10000),
+        preco: numeroValido(item.preco, 0, 1000000)
+      }));
+    }
+
+    reservaPercentual = numeroValido(
+      salvo.reservaPercentual ?? 10,
+      0,
+      100
+    );
+
+    descontoPercentual = numeroValido(
+      salvo.descontoPercentual ?? 0,
+      0,
+      100
+    );
+
+    const idsPersonalizados = itens
+      .map(item => {
+        const correspondencia = String(item.id).match(/^personalizado-(\d+)$/);
+        return correspondencia ? Number(correspondencia[1]) : 0;
+      });
+
+    proximoId = Math.max(0, ...idsPersonalizados) + 1;
+
+  } catch (erro) {
+    console.error("Erro ao carregar orçamento:", erro);
+    throw erro;
+  }
+}
+
 function renderizarSimulador() {
   const container = document.querySelector("#simulator");
   if (!container) return;
@@ -61,8 +131,21 @@ function renderizarSimulador() {
                 ${escaparHTML(item.nome)}
                 <small>${escaparHTML(item.detalhe)}</small>
               </label>
+
               ${campoNumero(item.quantidade, 'data-quantity aria-label="Quantidade de ' + escaparHTML(item.nome) + '" step="1" max="10000"')}
+
               ${campoNumero(item.preco, 'data-price aria-label="Preço unitário de ' + escaparHTML(item.nome) + '" max="1000000"')}
+
+              ${String(item.id).startsWith("personalizado-") ? `
+                <button
+                  type="button"
+                  class="vq-sim-secondary"
+                  data-remover-item="${escaparHTML(item.id)}"
+                  aria-label="Remover ${escaparHTML(item.nome)}"
+                >
+                  Remover
+                </button>
+              ` : ""}
             </div>
           `).join("")}
         </div>
@@ -72,16 +155,21 @@ function renderizarSimulador() {
             Nome do material personalizado
             <input id="vqSimCustomName" type="text" maxlength="80" placeholder="Ex.: pedras decorativas">
           </label>
+
           <label>
             Preço unitário (R$)
             <input id="vqSimCustomPrice" type="number" min="0" max="1000000" step="0.01" value="0">
           </label>
+
           <label>
             Quantidade
             <input id="vqSimCustomQuantity" type="number" min="1" max="10000" step="1" value="1">
           </label>
+
           <div>
-            <button type="button" class="vq-sim-secondary" id="vqSimAddItem">Adicionar material</button>
+            <button type="button" class="vq-sim-secondary" id="vqSimAddItem">
+              Adicionar material
+            </button>
           </div>
         </div>
       </section>
@@ -96,10 +184,12 @@ function renderizarSimulador() {
           <span>Materiais e plantas</span>
           <strong id="vqSimSubtotal">R$ 0,00</strong>
         </div>
+
         <div class="vq-sim-breakdown">
           <span>Reserva para imprevistos</span>
           <strong id="vqSimReserveValue">R$ 0,00</strong>
         </div>
+
         <div class="vq-sim-breakdown">
           <span>Itens no orçamento</span>
           <strong id="vqSimItemCount">0</strong>
@@ -108,17 +198,23 @@ function renderizarSimulador() {
         <div class="vq-sim-extra">
           <label>
             Reserva adicional (%)
-            <input id="vqSimReserve" type="number" min="0" max="100" step="1" value="10">
+            <input id="vqSimReserve" type="number" min="0" max="100" step="1" value="${reservaPercentual}">
           </label>
+
           <label>
             Desconto (%)
-            <input id="vqSimDiscount" type="number" min="0" max="100" step="1" value="0">
+            <input id="vqSimDiscount" type="number" min="0" max="100" step="1" value="${descontoPercentual}">
           </label>
         </div>
 
         <div class="vq-sim-actions">
-          <button type="button" class="vq-button vq-button-dark" id="vqSimPrint">Imprimir orçamento</button>
-          <button type="button" class="vq-sim-secondary" id="vqSimReset">Restaurar valores</button>
+          <button type="button" class="vq-button vq-button-dark" id="vqSimPrint">
+            Imprimir orçamento
+          </button>
+
+          <button type="button" class="vq-sim-secondary" id="vqSimReset">
+            Restaurar valores
+          </button>
         </div>
 
         <p class="vq-sim-note">
@@ -148,24 +244,24 @@ function lerValoresDaTela() {
     if (quantidade) quantidade.value = item.quantidade;
     if (preco) preco.value = item.preco;
   });
+
+  reservaPercentual = numeroValido(
+    document.querySelector("#vqSimReserve")?.value ?? reservaPercentual,
+    0,
+    100
+  );
+
+  descontoPercentual = numeroValido(
+    document.querySelector("#vqSimDiscount")?.value ?? descontoPercentual,
+    0,
+    100
+  );
 }
 
 function calcularOrcamento() {
   const subtotal = itens.reduce((total, item) => {
     return total + numeroValido(item.quantidade) * numeroValido(item.preco);
   }, 0);
-
-  const reservaPercentual = numeroValido(
-    document.querySelector("#vqSimReserve")?.value ?? 10,
-    0,
-    100
-  );
-
-  const descontoPercentual = numeroValido(
-    document.querySelector("#vqSimDiscount")?.value ?? 0,
-    0,
-    100
-  );
 
   const desconto = subtotal * descontoPercentual / 100;
   const baseComDesconto = subtotal - desconto;
@@ -195,13 +291,20 @@ function atualizarTotais() {
   const contagem = container.querySelector("#vqSimItemCount");
 
   if (total) total.textContent = moedaBRL(resultado.total);
+
   if (subtotal) {
     subtotal.textContent = resultado.desconto > 0
       ? `${moedaBRL(resultado.subtotal - resultado.desconto)} (com desconto)`
       : moedaBRL(resultado.subtotal);
   }
+
   if (reserva) reserva.textContent = moedaBRL(resultado.reserva);
   if (contagem) contagem.textContent = resultado.quantidadeItens;
+}
+
+async function salvarValoresAtuais() {
+  lerValoresDaTela();
+  await salvarOrcamento();
 }
 
 function conectarEventos() {
@@ -210,13 +313,16 @@ function conectarEventos() {
 
   container.querySelectorAll("[data-quantity], [data-price]").forEach(campo => {
     campo.addEventListener("input", atualizarTotais);
-    campo.addEventListener("change", atualizarTotais);
+    campo.addEventListener("change", salvarValoresAtuais);
   });
 
   container.querySelector("#vqSimReserve")?.addEventListener("input", atualizarTotais);
-  container.querySelector("#vqSimDiscount")?.addEventListener("input", atualizarTotais);
+  container.querySelector("#vqSimReserve")?.addEventListener("change", salvarValoresAtuais);
 
-  container.querySelector("#vqSimAddItem")?.addEventListener("click", () => {
+  container.querySelector("#vqSimDiscount")?.addEventListener("input", atualizarTotais);
+  container.querySelector("#vqSimDiscount")?.addEventListener("change", salvarValoresAtuais);
+
+  container.querySelector("#vqSimAddItem")?.addEventListener("click", async () => {
     const nomeCampo = container.querySelector("#vqSimCustomName");
     const precoCampo = container.querySelector("#vqSimCustomPrice");
     const quantidadeCampo = container.querySelector("#vqSimCustomQuantity");
@@ -233,6 +339,8 @@ function conectarEventos() {
       return;
     }
 
+    lerValoresDaTela();
+
     itens.push({
       id: criarId(),
       nome,
@@ -241,11 +349,29 @@ function conectarEventos() {
       preco
     });
 
+    await salvarOrcamento();
     renderizarSimulador();
   });
 
-  container.querySelector("#vqSimReset")?.addEventListener("click", () => {
+  container.querySelectorAll("[data-remover-item]").forEach(botao => {
+    botao.addEventListener("click", async () => {
+      lerValoresDaTela();
+
+      itens = itens.filter(
+        item => String(item.id) !== botao.dataset.removerItem
+      );
+
+      await salvarOrcamento();
+      renderizarSimulador();
+    });
+  });
+
+  container.querySelector("#vqSimReset")?.addEventListener("click", async () => {
     itens = itensIniciais.map(item => ({ ...item }));
+    reservaPercentual = 10;
+    descontoPercentual = 0;
+
+    await salvarOrcamento();
     renderizarSimulador();
   });
 
@@ -256,6 +382,7 @@ function imprimirOrcamento() {
   lerValoresDaTela();
 
   const resultado = calcularOrcamento();
+
   const linhas = itens
     .filter(item => item.quantidade > 0)
     .map(item => `
@@ -298,7 +425,9 @@ function imprimirOrcamento() {
       <p>Estimativa de materiais para seu projeto de jardim</p>
       <p>Data: ${new Date().toLocaleDateString("pt-BR")}</p>
       <table>
-        <thead><tr><th>Item</th><th>Qtd.</th><th>Preço unitário</th><th>Total</th></tr></thead>
+        <thead>
+          <tr><th>Item</th><th>Qtd.</th><th>Preço unitário</th><th>Total</th></tr>
+        </thead>
         <tbody>${linhas}</tbody>
       </table>
       <p>Subtotal com desconto: ${moedaBRL(resultado.subtotal - resultado.desconto)}</p>
@@ -313,12 +442,23 @@ function imprimirOrcamento() {
   janela.document.close();
 }
 
-export function iniciarSimulador() {
+export async function iniciarSimulador() {
   const container = document.querySelector("#simulator");
-  if (!container) return;
+  if (!container || inicializado) return;
 
-  inicializado = true;
-  renderizarSimulador();
+  try {
+    await carregarOrcamento();
+    inicializado = true;
+    renderizarSimulador();
+  } catch (erro) {
+    console.error("Não foi possível iniciar o simulador:", erro);
+
+    container.innerHTML = `
+      <p class="vq-empty-mini">
+        Não foi possível carregar seu orçamento. Verifique sua conexão e tente novamente.
+      </p>
+    `;
+  }
 }
 
 export function obterOrcamento() {

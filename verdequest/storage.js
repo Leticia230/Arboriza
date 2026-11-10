@@ -1,68 +1,74 @@
-import { auth } from "../pages/firebaseConfig.js";
 
-function obterSufixoUsuario() {
+import { auth, db } from "../pages/firebaseConfig.js";
+
+import {
+  doc,
+  getDoc,
+  setDoc,
+  serverTimestamp
+} from "https://www.gstatic.com/firebasejs/13.1.0/firebase-firestore.js";
+
+function obterReferencia(tipo) {
   const uid = auth.currentUser?.uid;
 
   if (!uid) {
-    return null;
+    throw new Error("Usuário não autenticado.");
   }
 
-  return uid;
+  return doc(db, "usuarios", uid, "verdequest", tipo);
 }
 
-function chaveDoUsuario(tipo) {
-  const uid = obterSufixoUsuario();
-
-  if (!uid) {
-    return null;
-  }
-
-  return `verdequest_${tipo}_${uid}`;
-}
-
-function lerDados(tipo) {
-  const chave = chaveDoUsuario(tipo);
-
-  if (!chave) return [];
-
+export async function obterDados(tipo) {
   try {
-    const dados = localStorage.getItem(chave);
-    return dados ? JSON.parse(dados) : [];
+    const referencia = obterReferencia(tipo);
+    const resultado = await getDoc(referencia);
+
+    if (!resultado.exists()) {
+      return [];
+    }
+
+    const dados = resultado.data().itens;
+    return Array.isArray(dados) ? dados : [];
+
   } catch (erro) {
-    console.error(`Erro ao ler ${tipo}:`, erro);
-    return [];
+    console.error(`Erro ao buscar ${tipo} no Firestore:`, erro);
+    throw erro;
   }
 }
 
-function salvarDados(tipo, dados) {
-  const chave = chaveDoUsuario(tipo);
-
-  if (!chave) {
-    console.error("Não foi possível salvar: usuário não autenticado.");
-    return false;
-  }
-
+export async function salvarDados(tipo, dados) {
   try {
-    localStorage.setItem(chave, JSON.stringify(dados));
+    if (!Array.isArray(dados)) {
+      throw new Error("Os dados precisam estar em formato de lista.");
+    }
+
+    const referencia = obterReferencia(tipo);
+
+    await setDoc(referencia, {
+      itens: dados,
+      atualizadoEm: serverTimestamp()
+    });
+
     return true;
+
   } catch (erro) {
-    console.error(`Erro ao salvar ${tipo}:`, erro);
+    console.error(`Erro ao salvar ${tipo} no Firestore:`, erro);
     return false;
   }
 }
 
-export function obterJardim() {
-  return lerDados("jardim");
+export async function obterJardim() {
+  return obterDados("jardim");
 }
 
-export function salvarJardim(plantas) {
+export async function salvarJardim(plantas) {
   return salvarDados("jardim", plantas);
 }
 
-export function obterCuidados() {
-  return lerDados("cuidados");
+export async function obterCuidados() {
+  return obterDados("cuidados");
 }
 
-export function salvarCuidados(cuidados) {
+export async function salvarCuidados(cuidados) {
   return salvarDados("cuidados", cuidados);
 }
