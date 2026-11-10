@@ -1,4 +1,3 @@
-
 const TIPOS_CUIDADO = {
   rega: {
     nome: "Rega",

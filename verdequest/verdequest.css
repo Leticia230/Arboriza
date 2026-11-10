@@ -171,8 +171,6 @@ select:focus-visible {
   display: none;
 }
 
-/* HERO */
-
 .vq-hero {
   display: grid;
   grid-template-columns: minmax(0, 1fr) minmax(0, .92fr);

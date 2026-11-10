@@ -1,4 +1,3 @@
-
 import { auth, db } from "../pages/firebaseConfig.js";
 
 import {
