@@ -413,3 +413,106 @@ body > aside img {
     margin: 0;
     padding: 0;
 }
+
+
+/* Barra de pesquisa */
+.midia-pesquisa {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    width: 100%;
+    min-height: 52px;
+    padding: 0 16px;
+    margin-bottom: 12px;
+    background: #fff;
+    border: 1px solid #C5D4B8;
+    border-radius: 12px;
+    transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.midia-pesquisa:focus-within {
+    border-color: #496B42;
+    box-shadow: 0 0 0 3px rgba(73, 107, 66, 0.12);
+}
+
+.midia-pesquisa svg {
+    width: 21px;
+    height: 21px;
+    flex-shrink: 0;
+    color: #496B42;
+}
+
+.midia-pesquisa input {
+    width: 100%;
+    min-width: 0;
+    border: none;
+    outline: none;
+    background: transparent;
+    color: #333;
+    font-family: inherit;
+    font-size: 14px;
+}
+
+.midia-pesquisa input::placeholder {
+    color: #92978D;
+}
+
+.midia-pesquisa button {
+    border: none;
+    background: transparent;
+    color: #496B42;
+    font-weight: 600;
+    font-size: 13px;
+    cursor: pointer;
+    white-space: nowrap;
+}
+
+.midia-pesquisa button[hidden] {
+    display: none;
+}
+
+/* Contador de resultados */
+.midia-contador {
+    color: #777;
+    font-size: 13px;
+    margin: 0 0 14px;
+}
+
+/* Data de publicação */
+.midia-card-data {
+    display: block;
+    color: #858B7E;
+    font-size: 12px;
+    margin-top: 5px;
+    margin-bottom: 10px;
+}
+
+/* Mensagem de pesquisa vazia */
+.midia-vazio {
+    text-align: center;
+    padding: 38px 20px;
+    background: #F5F6EF;
+    border: 1px dashed #C5D4B8;
+    border-radius: 16px;
+}
+
+.midia-vazio[hidden] {
+    display: none;
+}
+
+.midia-vazio span {
+    font-size: 32px;
+}
+
+.midia-vazio h3 {
+    color: #496B42;
+    font-size: 17px;
+    font-weight: 700;
+    margin: 12px 0 6px;
+}
+
+.midia-vazio p {
+    color: #777;
+    font-size: 14px;
+    line-height: 1.6;
+}

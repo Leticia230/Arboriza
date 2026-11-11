@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
@@ -8,71 +9,117 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600;700&family=Inter:wght@400;500;600;700&family=Lora:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
+
     <link rel="stylesheet" href="Midia.css">
     <link rel="stylesheet" href="Header.css">
     <link rel="stylesheet" href="Footer.css">
-
 </head>
+
 <body class="min-h-screen flex flex-col font-sans antialiased bg-arboriza-bg text-gray-800 selection:bg-arboriza-green-dark selection:text-white">
 
     <site-header></site-header>
 
     <main class="w-full max-w-4xl mx-auto px-4 py-8 flex-grow flex flex-col gap-8">
-        
+
         <section class="bg-arboriza-green-light border border-[#C5D4B8] rounded-2xl p-6 sm:p-8 flex flex-col sm:flex-row items-center justify-between gap-6 shadow-sm">
-            
-        <div class="flex items-center gap-3 sm:gap-4">
-            <div class="w-12 h-12 sm:w-14 sm:h-14 rounded-full border-2 border-arboriza-green-dark flex items-center justify-center shrink-0 text-arboriza-green-dark" aria-hidden="true">
-                <svg class="w-6 h-6 sm:w-7 sm:h-7 translate-x-0.5" fill="currentColor" viewBox="0 0 24 24">
-                    <path d="M8 5v14l11-7z"/>
-                </svg>
+
+            <div class="flex items-center gap-3 sm:gap-4">
+                <div class="w-12 h-12 sm:w-14 sm:h-14 rounded-full border-2 border-arboriza-green-dark flex items-center justify-center shrink-0 text-arboriza-green-dark" aria-hidden="true">
+                    <svg class="w-6 h-6 sm:w-7 sm:h-7 translate-x-0.5" fill="currentColor" viewBox="0 0 24 24">
+                        <path d="M8 5v14l11-7z"/>
+                    </svg>
+                </div>
+
+                <h1 class="text-4xl sm:text-5xl font-serifTitle text-arboriza-green-dark tracking-wide m-0">
+                    Mídia
+                </h1>
             </div>
 
-            <h1 class="text-4xl sm:text-5xl font-serifTitle text-arboriza-green-dark tracking-wide m-0">
-                Mídia
-            </h1>
-        </div>
-
-            
             <p class="text-xs sm:text-sm text-gray-700 max-w-xs text-center sm:text-left leading-relaxed font-normal">
-                Ouça podcasts e assista vídeos, filmes e documentários sobre o tema
+                Ouça podcasts e assista vídeos, filmes e documentários sobre o meio ambiente.
             </p>
         </section>
 
-        <nav aria-label="Categorias de mídia" class="flex items-center justify-center gap-3 sm:gap-4 my-2">
-            <button id="btn-podcast" onclick="switchTab('podcast')" 
+        <nav aria-label="Categorias de mídia" class="flex items-center justify-center gap-3 sm:gap-4 my-2 flex-wrap">
+
+            <button id="btn-podcast" type="button"
                 class="px-6 py-2.5 rounded-xl font-bold text-sm sm:text-base transition-all duration-200 shadow-sm bg-arboriza-green-dark text-white border border-arboriza-green-dark">
-                Podcast
+                Podcasts
             </button>
-            <button id="btn-filmes" onclick="switchTab('filmes')" 
+
+            <button id="btn-filmes" type="button"
                 class="px-6 py-2.5 rounded-xl font-semibold text-sm sm:text-base text-arboriza-green-dark bg-arboriza-tab-inactive hover:bg-[#D8DAC8] transition-all duration-200 border border-transparent">
-                Filmes
+                Vídeos
             </button>
-            <button id="btn-documentarios" onclick="switchTab('documentarios')" 
+
+            <button id="btn-documentarios" type="button"
                 class="px-6 py-2.5 rounded-xl font-semibold text-sm sm:text-base text-arboriza-green-dark bg-arboriza-tab-inactive hover:bg-[#D8DAC8] transition-all duration-200 border border-transparent">
                 Documentários
             </button>
+
         </nav>
 
         <section class="w-full">
+
             <h2 id="section-title" class="text-lg sm:text-xl font-bold text-arboriza-green-dark mb-5">
                 Podcasts em destaque
             </h2>
 
+            <!-- Barra de pesquisa -->
+            <div class="midia-pesquisa">
+                <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                    <circle cx="10.8" cy="10.8" r="6.8"
+                        stroke="currentColor" stroke-width="2.2"/>
+                    <path d="M16 16L21 21"
+                        stroke="currentColor"
+                        stroke-width="2.2"
+                        stroke-linecap="round"/>
+                </svg>
+
+                <input
+                    type="search"
+                    id="campo-pesquisa-midia"
+                    placeholder="Pesquisar vídeos, podcasts e documentários..."
+                    aria-label="Pesquisar conteúdos de mídia"
+                    autocomplete="off"
+                >
+
+                <button
+                    type="button"
+                    id="limpar-pesquisa-midia"
+                    aria-label="Limpar pesquisa"
+                    hidden
+                >
+                    Limpar
+                </button>
+            </div>
+
+            <p id="contador-midia" class="midia-contador" aria-live="polite"></p>
+
             <div id="cards-container" class="flex flex-col gap-4">
             </div>
+
+            <div id="mensagem-vazia-midia" class="midia-vazio" hidden>
+                <span aria-hidden="true">🌿</span>
+                <h3>Nenhum conteúdo encontrado</h3>
+                <p>
+                    Não encontramos resultados para sua pesquisa.
+                    Tente utilizar outras palavras.
+                </p>
+            </div>
+
         </section>
 
     </main>
 
     <section class="city-image-section">
         <img
-            src="../assets/footer.png" 
+            src="../assets/footer.png"
             alt="Vegetação urbana e edifícios"
         >
     </section>
 
-        <site-footer></site-footer>
+    <site-footer></site-footer>
 
     <script src="header.js"></script>
     <script src="Footer.js"></script>
