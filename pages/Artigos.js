@@ -1,4 +1,3 @@
-
 document.addEventListener('DOMContentLoaded', () => {
     const form = document.getElementById('form-pesquisa');
     const campoPesquisa = document.getElementById('campo-pesquisa');
@@ -232,7 +231,6 @@ document.addEventListener('DOMContentLoaded', () => {
         const titulo = document.createElement('h2');
         titulo.textContent = artigo.titulo;
 
-        // Descrição do artigo
         const descricao = document.createElement('p');
         descricao.className = 'artigo-descricao';
         descricao.textContent = artigo.descricao;

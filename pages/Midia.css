@@ -414,8 +414,6 @@ body > aside img {
     padding: 0;
 }
 
-
-/* Barra de pesquisa */
 .midia-pesquisa {
     display: flex;
     align-items: center;
@@ -471,14 +469,12 @@ body > aside img {
     display: none;
 }
 
-/* Contador de resultados */
 .midia-contador {
     color: #777;
     font-size: 13px;
     margin: 0 0 14px;
 }
 
-/* Data de publicação */
 .midia-card-data {
     display: block;
     color: #858B7E;
@@ -487,7 +483,6 @@ body > aside img {
     margin-bottom: 10px;
 }
 
-/* Mensagem de pesquisa vazia */
 .midia-vazio {
     text-align: center;
     padding: 38px 20px;
