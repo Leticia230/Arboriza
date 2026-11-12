@@ -1,4 +1,3 @@
-
 document.addEventListener('DOMContentLoaded', () => {
     const container = document.getElementById('cards-container');
     const sectionTitle = document.getElementById('section-title');
