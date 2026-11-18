@@ -15,7 +15,7 @@ VerdeQuest:
 6. Meu Jardim, permitindo adicionar plantas à coleção pessoal.
 7. Sistema de missões.
 8. Acompanhamento de progresso, com indicadores de plantas, missões concluídas, sementes e percentual de evolução.
-9 Planejamento de orçamento para estimar os custos de criação de um jardim.
+9. Planejamento de orçamento para estimar os custos de criação de um jardim.
 10. Personalização de orçamento por meio da definição de quantidades e preços dos materiais.
 11. Diário do Jardim para registrar cuidados realizados com as plantas.
 12. Histórico de cuidados, permitindo consultar registros de regas anteriores.
